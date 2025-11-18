@@ -55,9 +55,9 @@ function plugin_version_kanbanlooksgood()
     return [
         'name'         => 'Kanban Looks Good',
         'version'      => PLUGIN_KANBANLOOKSGOOD_VERSION,
-        'author'       => '<a href="#">HUC</a>',
+        'author'       => '<a href="mailto:juancarlos.ap.dev@gmail.com">Juan Carlos Acosta Perabá</a>',
         'license'      => 'GPLv2+',
-        'homepage'     => 'https://www3.gobiernodecanarias.org/sanidad/scs/organica.jsp?idCarpeta=3da5f513-541b-11de-9665-998e1388f7ed',
+        'homepage'     => 'https://github.com/JuanCarlosAcostaPeraba/kanbanlooksgood',
         'requirements' => [
             'glpi' => [
                 'min' => PLUGIN_KANBANLOOKSGOOD_MIN_GLPI,
