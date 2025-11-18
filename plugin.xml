@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<plugins>
+	<plugin
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:noNamespaceSchemaLocation="https://plugins.glpi-project.org/apiplugin/plugin-schema.xsd"
+	>
+		<!-- Unique directory name of the plugin -->
+		<dir>kanbanlooksgood</dir>
+
+		<!-- Displayed name -->
+		<name>Kanban Looks Good</name>
+
+		<!-- Short description -->
+		<short_description>
+			Improve GLPI Project Kanban cards with native priority badges and planned duration, without
+			modifying core.
+		</short_description>
+
+		<!-- Long description -->
+		<description>
+			Kanban Looks Good is a lightweight plugin for GLPI that enhances the Project Kanban board by
+			adding native
+			priority badges (with GLPI's own colors) and a human-readable planned duration on each card,
+			for both Projects
+			and Project Tasks — all without modifying any GLPI core files.
+		</description>
+
+		<!-- Plugin version -->
+		<version>1.0.0</version>
+
+		<!-- License -->
+		<license>GPLv2+</license>
+
+		<!-- Homepage / repository URL -->
+		<homepage>https://github.com/JuanCarlosAcostaPeraba/kanbanlooksgood</homepage>
+
+		<!-- Minimum and maximum GLPI versions (max is exclusive) -->
+		<minGlpiVersion>10.0.0</minGlpiVersion>
+		<maxGlpiVersion>10.0.99</maxGlpiVersion>
+
+		<!-- Author -->
+		<authors>
+			<author>
+				<name>Juan Carlos Acosta Perabá</name>
+				<homepage>https://github.com/JuanCarlosAcostaPeraba</homepage>
+				<email>juancarlos.ap.dev@gmail.com</email>
+			</author>
+		</authors>
+
+		<!-- Compatibility -->
+		<requirements>
+			<php>
+				<min>7.4</min>
+				<max>8.3</max>
+			</php>
+		</requirements>
+
+		<!-- Tags -->
+		<tags>
+			<tag>kanban</tag>
+			<tag>projects</tag>
+			<tag>ui</tag>
+			<tag>priority</tag>
+			<tag>duration</tag>
+		</tags>
+
+	</plugin>
+</plugins>
