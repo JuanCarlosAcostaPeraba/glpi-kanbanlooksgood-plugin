@@ -38,6 +38,11 @@
 		<minGlpiVersion>10.0.0</minGlpiVersion>
 		<maxGlpiVersion>10.0.99</maxGlpiVersion>
 
+		<!-- Download URL -->
+		<download>
+			https://github.com/JuanCarlosAcostaPeraba/kanbanlooksgood/releases/latest/download/kanbanlooksgood-1.0.0.zip
+		</download>
+
 		<!-- Author -->
 		<authors>
 			<author>
