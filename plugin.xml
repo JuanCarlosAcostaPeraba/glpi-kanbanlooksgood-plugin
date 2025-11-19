@@ -2,8 +2,10 @@
 	<name>Kanban Looks Good</name>
 	<key>kanbanlooksgood</key>
 
+	<!-- stable | unstable | beta | alpha -->
 	<state>stable</state>
 
+	<!-- 40x40px or bigger. Marketplace will resize it. -->
 	<logo>https://raw.githubusercontent.com/JuanCarlosAcostaPeraba/kanbanlooksgood/main/assets/logo.png</logo>
 
 	<description>
@@ -11,7 +13,6 @@
 			<en>Enhances the GLPI Project Kanban by displaying Priority and Planned Duration on cards.</en>
 			<es_ES>Mejora el Kanban de Proyectos de GLPI mostrando Prioridad y Duración Planificada.</es_ES>
 		</short>
-
 		<long>
 			<en><![CDATA[
 **Kanban Looks Good** is a visual enhancement plugin for the GLPI Project Kanban module.
@@ -46,21 +47,22 @@ Desarrollado para uso real en el **Hospital Universitario de Canarias (HUC)**.
 	</description>
 
 	<homepage>https://github.com/JuanCarlosAcostaPeraba/kanbanlooksgood</homepage>
+
 	<download>https://github.com/JuanCarlosAcostaPeraba/kanbanlooksgood/releases</download>
 	<issues>https://github.com/JuanCarlosAcostaPeraba/kanbanlooksgood/issues</issues>
 	<readme>https://raw.githubusercontent.com/JuanCarlosAcostaPeraba/kanbanlooksgood/main/README.md</readme>
 
 	<authors>
-		<author>
-			<name>Juan Carlos Acosta Perabá</name>
-		</author>
+		<author>Juan Carlos Acosta Perabá</author>
 	</authors>
 
 	<versions>
 		<version>
 			<num>1.0.0</num>
-			<compatibility>~10.0</compatibility>
-			<download_url>https://github.com/JuanCarlosAcostaPeraba/kanbanlooksgood/releases/download/v1.0.0/kanbanlooksgood-1.0.0.zip</download_url>
+			<compatibility>~10.0.0</compatibility>
+			<download_url>
+				https://github.com/JuanCarlosAcostaPeraba/kanbanlooksgood/releases/download/v1.0.0/kanbanlooksgood-1.0.0.zip
+			</download_url>
 		</version>
 	</versions>
 
