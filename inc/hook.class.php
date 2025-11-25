@@ -34,6 +34,60 @@ if (!defined('GLPI_ROOT')) {
 class PluginKanbanlooksgoodHook
 {
     /**
+     * Convierte una duración en segundos a formato humano usando jornada laboral configurable
+     *
+     * @param int $seconds Duración en segundos
+     * @param int $hoursPerDay Horas por día laboral (por defecto desde config)
+     * @return string Duración formateada (ej: "2d 3h 30min")
+     */
+    private static function formatPlannedDuration($seconds, $hoursPerDay = null)
+    {
+        if ($seconds <= 0) {
+            return '';
+        }
+
+        // Obtener configuración si no se pasa explícitamente
+        if ($hoursPerDay === null) {
+            $config = PluginKanbanlooksgoodConfig::getConfig();
+            $hoursPerDay = $config['work_hours_per_day'];
+        }
+
+        // Constantes para jornada laboral configurable
+        $SECONDS_PER_MINUTE = 60;
+        $SECONDS_PER_HOUR = 3600;
+        $SECONDS_PER_DAY = $hoursPerDay * 3600; // Horas configuradas = 1 día laboral
+
+        $days = floor($seconds / $SECONDS_PER_DAY);
+        $remainder = $seconds % $SECONDS_PER_DAY;
+
+        $hours = floor($remainder / $SECONDS_PER_HOUR);
+        $remainder = $remainder % $SECONDS_PER_HOUR;
+
+        $minutes = floor($remainder / $SECONDS_PER_MINUTE);
+
+        $parts = [];
+
+        if ($days > 0) {
+            $parts[] = $days . 'd';
+        }
+
+        if ($hours > 0) {
+            $parts[] = $hours . 'h';
+        }
+
+        if ($minutes > 0) {
+            $parts[] = $minutes . 'min';
+        }
+
+        // Si no hay partes (menos de 1 minuto), mostrar "< 1min"
+        if (empty($parts)) {
+            return '< 1min';
+        }
+
+        return implode(' ', $parts);
+    }
+
+    /**
      * Hook called when Kanban item metadata is being built
      * Adds priority and planned duration to Project and ProjectTask cards
      *
@@ -54,13 +108,16 @@ class PluginKanbanlooksgoodHook
             return ['metadata' => $metadata];
         }
 
+        // Obtener configuración del plugin
+        $config = PluginKanbanlooksgoodConfig::getConfig();
+
         // Cargar el item UNA SOLA VEZ para evitar múltiples consultas SQL
         $item = null;
         $needs_item_load = false;
 
-        // Verificar qué necesitamos cargar
-        $needs_priority = !isset($metadata['priority']) && $itemtype === 'Project';
-        $needs_duration = !isset($metadata['planned_duration_human']) || empty($metadata['planned_duration_human']);
+        // Verificar qué necesitamos cargar según configuración
+        $needs_priority = $config['show_priority'] && !isset($metadata['priority']) && $itemtype === 'Project';
+        $needs_duration = $config['show_duration'] && (!isset($metadata['planned_duration_human']) || empty($metadata['planned_duration_human']));
 
         if ($needs_priority || ($needs_duration && $itemtype === 'ProjectTask')) {
             $needs_item_load = true;
@@ -125,8 +182,8 @@ class PluginKanbanlooksgoodHook
                         $metadata['planned_duration'] = $planned_duration;
                     }
 
-                    // Valor formateado para mostrar
-                    $metadata['planned_duration_human'] = Html::timestampToString($planned_duration, false);
+                    // Valor formateado para mostrar (con jornada laboral de 7 horas)
+                    $metadata['planned_duration_human'] = self::formatPlannedDuration($planned_duration);
                 }
             } elseif ($itemtype === 'ProjectTask') {
                 // Para ProjectTask: usar planned_duration de metadata si existe, sino del item cargado
@@ -144,11 +201,17 @@ class PluginKanbanlooksgoodHook
                         $metadata['planned_duration'] = $planned_duration;
                     }
 
-                    // Valor formateado para mostrar
-                    $metadata['planned_duration_human'] = Html::timestampToString($planned_duration, false);
+                    // Valor formateado para mostrar (con jornada laboral de 7 horas)
+                    $metadata['planned_duration_human'] = self::formatPlannedDuration($planned_duration);
                 }
             }
         }
+
+        // Añadir configuración a metadata para uso en JavaScript
+        $metadata['_kanbanlooksgood_config'] = [
+            'show_priority' => $config['show_priority'],
+            'show_duration' => $config['show_duration']
+        ];
 
         return ['metadata' => $metadata];
     }

@@ -85,13 +85,19 @@
             return;
         }
 
+        // Obtener configuración desde metadata
+        const config = $card.data('_kanbanlooksgood_config') || {
+            show_priority: 1,
+            show_duration: 1
+        };
+
         // Estos valores vienen desde el backend vía _metadata y el core Kanban.js
         const priorityHtml = $card.data('priority') || null;
         const priorityColor = $card.data('priority_color') || null;
         const plannedDurationHuman = $card.data('planned_duration_human') || null;
 
-        const hasPriority = !!priorityHtml && !!priorityColor;
-        const hasDuration = !!plannedDurationHuman;
+        const hasPriority = config.show_priority && !!priorityHtml && !!priorityColor;
+        const hasDuration = config.show_duration && !!plannedDurationHuman;
 
         if (!hasPriority && !hasDuration) {
             return;

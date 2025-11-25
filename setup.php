@@ -8,7 +8,7 @@
 
 use Glpi\Plugin\Hooks;
 
-define('PLUGIN_KANBANLOOKSGOOD_VERSION', '1.0.0');
+define('PLUGIN_KANBANLOOKSGOOD_VERSION', '1.2.0');
 
 // Minimal GLPI version, inclusive
 define("PLUGIN_KANBANLOOKSGOOD_MIN_GLPI", "10.0.0");
@@ -32,6 +32,9 @@ function plugin_init_kanbanlooksgood()
 
     if (Plugin::isPluginActive('kanbanlooksgood')) {
 
+        // 🔹 Verificar y actualizar estructura de base de datos si es necesario
+        plugin_kanbanlooksgood_check_and_upgrade();
+
         // 🔹 Hook de metadata del Kanban (BACKEND)
         $PLUGIN_HOOKS[Hooks::KANBAN_ITEM_METADATA]['kanbanlooksgood'] = [
             'PluginKanbanlooksgoodHook',
@@ -41,6 +44,12 @@ function plugin_init_kanbanlooksgood()
         // 🔹 JS + CSS del plugin (FRONTEND)
         $PLUGIN_HOOKS['add_javascript']['kanbanlooksgood'][] = 'js/kanban.js';
         $PLUGIN_HOOKS['add_css']['kanbanlooksgood'][]        = 'css/kanban.css';
+
+        // 🔹 Menú de configuración
+        $PLUGIN_HOOKS['config_page']['kanbanlooksgood'] = 'front/config.form.php';
+
+        // 🔹 Añadir configuración al head para JavaScript
+        $PLUGIN_HOOKS['add_javascript']['kanbanlooksgood'][] = 'js/config_inject.js';
     }
 }
 
@@ -57,7 +66,7 @@ function plugin_version_kanbanlooksgood()
         'version'      => PLUGIN_KANBANLOOKSGOOD_VERSION,
         'author'       => '<a href="mailto:juancarlos.ap.dev@gmail.com">Juan Carlos Acosta Perabá</a>',
         'license'      => 'GPLv2+',
-        'homepage'     => 'https://github.com/JuanCarlosAcostaPeraba/kanbanlooksgood',
+        'homepage'     => 'https://github.com/juancarlosacostaperaba/kanbanlooksgood',
         'requirements' => [
             'glpi' => [
                 'min' => PLUGIN_KANBANLOOKSGOOD_MIN_GLPI,
@@ -65,6 +74,41 @@ function plugin_version_kanbanlooksgood()
             ]
         ]
     ];
+}
+
+/**
+ * Check and upgrade database structure if needed
+ * This runs on every page load when plugin is active
+ *
+ * @return void
+ */
+function plugin_kanbanlooksgood_check_and_upgrade()
+{
+    global $DB;
+
+    // Verificar si la tabla de configuración existe
+    if (!$DB->tableExists('glpi_plugin_kanbanlooksgood_configs')) {
+        // Crear tabla de configuración
+        $query = "CREATE TABLE IF NOT EXISTS `glpi_plugin_kanbanlooksgood_configs` (
+            `id` int(11) NOT NULL AUTO_INCREMENT,
+            `show_priority` tinyint(1) NOT NULL DEFAULT '1',
+            `show_duration` tinyint(1) NOT NULL DEFAULT '1',
+            `work_hours_per_day` int(11) NOT NULL DEFAULT '7',
+            PRIMARY KEY (`id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
+
+        $DB->query($query);
+
+        // Insertar configuración por defecto
+        $DB->insert(
+            'glpi_plugin_kanbanlooksgood_configs',
+            [
+                'show_priority' => 1,
+                'show_duration' => 1,
+                'work_hours_per_day' => 7
+            ]
+        );
+    }
 }
 
 /**
@@ -100,6 +144,38 @@ function plugin_kanbanlooksgood_check_config($verbose = false)
  */
 function plugin_kanbanlooksgood_install()
 {
+    global $DB;
+
+    // Crear tabla de configuración
+    $query = "CREATE TABLE IF NOT EXISTS `glpi_plugin_kanbanlooksgood_configs` (
+        `id` int(11) NOT NULL AUTO_INCREMENT,
+        `show_priority` tinyint(1) NOT NULL DEFAULT '1',
+        `show_duration` tinyint(1) NOT NULL DEFAULT '1',
+        `work_hours_per_day` int(11) NOT NULL DEFAULT '7',
+        PRIMARY KEY (`id`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
+
+    if (!$DB->query($query)) {
+        return false;
+    }
+
+    // Insertar configuración por defecto si no existe
+    $iterator = $DB->request([
+        'FROM' => 'glpi_plugin_kanbanlooksgood_configs',
+        'LIMIT' => 1
+    ]);
+
+    if (count($iterator) === 0) {
+        $DB->insert(
+            'glpi_plugin_kanbanlooksgood_configs',
+            [
+                'show_priority' => 1,
+                'show_duration' => 1,
+                'work_hours_per_day' => 7
+            ]
+        );
+    }
+
     return true;
 }
 
@@ -111,5 +187,16 @@ function plugin_kanbanlooksgood_install()
  */
 function plugin_kanbanlooksgood_uninstall()
 {
+    global $DB;
+
+    // Eliminar tabla de configuración
+    $tables = [
+        'glpi_plugin_kanbanlooksgood_configs'
+    ];
+
+    foreach ($tables as $table) {
+        $DB->query("DROP TABLE IF EXISTS `$table`");
+    }
+
     return true;
 }
