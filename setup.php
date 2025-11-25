@@ -8,7 +8,7 @@
 
 use Glpi\Plugin\Hooks;
 
-define('PLUGIN_KANBANLOOKSGOOD_VERSION', '1.2.0');
+define('PLUGIN_KANBANLOOKSGOOD_VERSION', '1.2.1');
 
 // Minimal GLPI version, inclusive
 define("PLUGIN_KANBANLOOKSGOOD_MIN_GLPI", "10.0.0");
