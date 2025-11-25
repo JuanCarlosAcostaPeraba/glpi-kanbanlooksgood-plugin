@@ -85,10 +85,6 @@ class PluginKanbanlooksgoodConfig extends CommonDBTM
             $work_hours_per_day = 7;
         }
 
-        // Debug: Log en archivo (temporal para debugging)
-        $debug_msg = date('Y-m-d H:i:s') . " - Guardando config: priority={$show_priority}, duration={$show_duration}, hours={$work_hours_per_day}\n";
-        error_log($debug_msg, 3, GLPI_LOG_DIR . '/kanbanlooksgood_debug.log');
-
         $iterator = $DB->request([
             'FROM' => 'glpi_plugin_kanbanlooksgood_configs',
             'LIMIT' => 1
@@ -107,7 +103,6 @@ class PluginKanbanlooksgoodConfig extends CommonDBTM
                 ['id' => $data['id']]
             );
 
-            error_log(date('Y-m-d H:i:s') . " - UPDATE result: " . ($result ? 'SUCCESS' : 'FAILED') . "\n", 3, GLPI_LOG_DIR . '/kanbanlooksgood_debug.log');
             return $result;
         } else {
             // Insert
@@ -120,7 +115,6 @@ class PluginKanbanlooksgoodConfig extends CommonDBTM
                 ]
             );
 
-            error_log(date('Y-m-d H:i:s') . " - INSERT result: " . ($result ? 'SUCCESS' : 'FAILED') . "\n", 3, GLPI_LOG_DIR . '/kanbanlooksgood_debug.log');
             return $result;
         }
     }
