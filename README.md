@@ -1,8 +1,9 @@
 # Kanban Looks Good
 
+[![Version](https://img.shields.io/badge/Version-1.2.0-green.svg)](https://github.com/JuanCarlosAcostaPeraba/kanbanlooksgood/releases)
+[![GLPI Marketplace](https://img.shields.io/badge/GLPI_Marketplace-Available-orange.svg)](https://plugins.glpi-project.org/#/plugin/kanbanlooksgood)
 [![GLPI](https://img.shields.io/badge/GLPI-10.0.x-blue.svg)](https://glpi-project.org)
 [![License: GPLv2+](https://img.shields.io/badge/License-GPLv2+-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.html)
-[![Status](https://img.shields.io/badge/Status-Stable-brightgreen.svg)]()
 [![Maintained](https://img.shields.io/badge/Maintained-yes-success.svg)]()
 
 A lightweight and non-intrusive GLPI plugin that enhances the **Project Kanban** by displaying **Priority** and **Planned Duration** directly on each card — without modifying any GLPI core files.
@@ -24,15 +25,24 @@ A lightweight and non-intrusive GLPI plugin that enhances the **Project Kanban**
 
 ## 🚀 Installation
 
-1. Copy the folder `kanbanlooksgood` into:
+### Option 1: From GLPI Marketplace (Recommended)
+
+1. Go to **GLPI → Configuration → Plugins → Marketplace**
+2. Search for **Kanban Looks Good**
+3. Click **Install**, then **Enable**
+
+### Option 2: Manual Installation
+
+1. Download the latest release from [GitHub Releases](https://github.com/JuanCarlosAcostaPeraba/kanbanlooksgood/releases)
+2. Extract and copy the folder `kanbanlooksgood` into:
 
     ```
     glpi/plugins/
     ```
 
-2. Go to **GLPI → Configuration → Plugins**
-3. Find **Kanban Looks Good**
-4. Click **Install**, then **Enable**
+3. Go to **GLPI → Configuration → Plugins**
+4. Find **Kanban Looks Good**
+5. Click **Install**, then **Enable**
 
 ## ⚙️ Configuration
 
