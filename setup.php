@@ -8,12 +8,12 @@
 
 use Glpi\Plugin\Hooks;
 
-define('PLUGIN_KANBANLOOKSGOOD_VERSION', '1.2.1');
+define('PLUGIN_KANBANLOOKSGOOD_VERSION', '1.3.0');
 
 // Minimal GLPI version, inclusive
 define("PLUGIN_KANBANLOOKSGOOD_MIN_GLPI", "10.0.0");
 // Maximum GLPI version, exclusive
-define("PLUGIN_KANBANLOOKSGOOD_MAX_GLPI", "10.0.99");
+define("PLUGIN_KANBANLOOKSGOOD_MAX_GLPI", "11.0.99");
 
 /**
  * Init hooks of the plugin.

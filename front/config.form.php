@@ -6,7 +6,10 @@
  * -------------------------------------------------------------------------
  */
 
-include('../../../inc/includes.php');
+// GLPI 10.x requires manual include, GLPI 11.x auto-loads
+if (!defined('GLPI_ROOT')) {
+    include('../../../inc/includes.php');
+}
 
 Session::checkRight('config', UPDATE);
 

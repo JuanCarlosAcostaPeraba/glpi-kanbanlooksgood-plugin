@@ -1,8 +1,8 @@
 # Kanban Looks Good
 
-[![Version](https://img.shields.io/badge/Version-1.2.1-green.svg)](https://github.com/JuanCarlosAcostaPeraba/kanbanlooksgood/releases)
+[![Version](https://img.shields.io/badge/Version-1.3.0-green.svg)](https://github.com/JuanCarlosAcostaPeraba/kanbanlooksgood/releases)
 [![GLPI Marketplace](https://img.shields.io/badge/GLPI_Marketplace-Available-orange.svg)](https://plugins.glpi-project.org/#/plugin/kanbanlooksgood)
-[![GLPI](https://img.shields.io/badge/GLPI-10.0.x-blue.svg)](https://glpi-project.org)
+[![GLPI](https://img.shields.io/badge/GLPI-10.0.x_|_11.0.x-blue.svg)](https://glpi-project.org)
 [![License: GPLv3+](https://img.shields.io/badge/License-GPLv3+-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.html)
 [![Maintained](https://img.shields.io/badge/Maintained-yes-success.svg)]()
 
@@ -20,8 +20,8 @@ A lightweight and non-intrusive GLPI plugin that enhances the **Project Kanban**
 
 ## 📦 Requirements
 
-- GLPI **10.0.0 - 10.0.99**
-- PHP **7.4+**
+- GLPI **10.0.x** or **11.0.x**
+- PHP **8.1+** (recommended for GLPI 11)
 
 ## 🚀 Installation
 
