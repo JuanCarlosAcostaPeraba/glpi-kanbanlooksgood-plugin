@@ -87,6 +87,7 @@ Desarrollado para uso real en el **Hospital Universitario de Canarias (HUC)**.
 	<langs>
 		<lang>en_GB</lang>
 		<lang>es_ES</lang>
+		<lang>fr_FR</lang>
 	</langs>
 
 	<license>GPL v3+</license>
