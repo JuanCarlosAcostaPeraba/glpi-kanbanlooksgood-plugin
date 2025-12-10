@@ -4,20 +4,58 @@
  * -------------------------------------------------------------------------
  * Kanban Looks Good plugin for GLPI
  * -------------------------------------------------------------------------
+ *
+ * LICENSE
+ *
+ * This file is part of Kanban Looks Good.
+ *
+ * Kanban Looks Good is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Kanban Looks Good is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with Kanban Looks Good. If not, see <http://www.gnu.org/licenses/>.
+ * -------------------------------------------------------------------------
+ *
+ * @package   KanbanLooksGood
+ * @author    Juan Carlos Acosta Perabá
+ * @copyright Copyright (C) 2024-2025 by Juan Carlos Acosta Perabá
+ * @license   GPLv3+ http://www.gnu.org/licenses/gpl.html
+ * @link      https://github.com/JuanCarlosAcostaPeraba/kanbanlooksgood
+ * -------------------------------------------------------------------------
  */
 
 use Glpi\Plugin\Hooks;
 
+/**
+ * Plugin version
+ */
 define('PLUGIN_KANBANLOOKSGOOD_VERSION', '1.3.0');
 
-// Minimal GLPI version, inclusive
-define("PLUGIN_KANBANLOOKSGOOD_MIN_GLPI", "10.0.0");
-// Maximum GLPI version, exclusive
-define("PLUGIN_KANBANLOOKSGOOD_MAX_GLPI", "11.0.99");
+/**
+ * Minimum GLPI version required (inclusive)
+ */
+define('PLUGIN_KANBANLOOKSGOOD_MIN_GLPI', '10.0.0');
 
 /**
- * Init hooks of the plugin.
- * REQUIRED
+ * Maximum GLPI version supported (exclusive)
+ */
+define('PLUGIN_KANBANLOOKSGOOD_MAX_GLPI', '11.0.99');
+
+/**
+ * Initialize plugin hooks
+ *
+ * This function is called by GLPI to register the plugin's hooks and resources.
+ * It sets up the Kanban metadata hook, registers JavaScript/CSS files, and
+ * configures the plugin's settings page.
+ *
+ * @global array $PLUGIN_HOOKS GLPI's plugin hooks registry
  *
  * @return void
  */
@@ -28,36 +66,46 @@ function plugin_init_kanbanlooksgood()
      */
     global $PLUGIN_HOOKS;
 
+    // Mark plugin as CSRF compliant
     $PLUGIN_HOOKS['csrf_compliant']['kanbanlooksgood'] = true;
 
     if (Plugin::isPluginActive('kanbanlooksgood')) {
 
-        // 🔹 Verificar y actualizar estructura de base de datos si es necesario
+        // Verify and upgrade database structure if needed
         plugin_kanbanlooksgood_check_and_upgrade();
 
-        // 🔹 Hook de metadata del Kanban (BACKEND)
+        // Register Kanban item metadata hook (backend processing)
         $PLUGIN_HOOKS[Hooks::KANBAN_ITEM_METADATA]['kanbanlooksgood'] = [
             'PluginKanbanlooksgoodHook',
             'kanbanItemMetadata'
         ];
 
-        // 🔹 JS + CSS del plugin (FRONTEND)
+        // Register frontend JavaScript files
         $PLUGIN_HOOKS['add_javascript']['kanbanlooksgood'][] = 'js/kanban.js';
-        $PLUGIN_HOOKS['add_css']['kanbanlooksgood'][]        = 'css/kanban.css';
-
-        // 🔹 Menú de configuración
-        $PLUGIN_HOOKS['config_page']['kanbanlooksgood'] = 'front/config.form.php';
-
-        // 🔹 Añadir configuración al head para JavaScript
         $PLUGIN_HOOKS['add_javascript']['kanbanlooksgood'][] = 'js/config_inject.js';
+
+        // Register frontend CSS files
+        $PLUGIN_HOOKS['add_css']['kanbanlooksgood'][] = 'css/kanban.css';
+
+        // Register configuration page
+        $PLUGIN_HOOKS['config_page']['kanbanlooksgood'] = 'front/config.form.php';
     }
 }
 
 /**
- * Get the name and the version of the plugin
- * REQUIRED
+ * Get plugin version information
  *
- * @return array
+ * This function returns the plugin's metadata including name, version,
+ * author, license, and GLPI version requirements. Called by GLPI to
+ * display plugin information in the administration interface.
+ *
+ * @return array Plugin information array with keys:
+ *               - name: Plugin display name
+ *               - version: Current plugin version
+ *               - author: Plugin author with contact link
+ *               - license: Software license
+ *               - homepage: Project homepage URL
+ *               - requirements: Array of version requirements
  */
 function plugin_version_kanbanlooksgood()
 {
@@ -78,7 +126,12 @@ function plugin_version_kanbanlooksgood()
 
 /**
  * Check and upgrade database structure if needed
- * This runs on every page load when plugin is active
+ *
+ * This function is called on every page load when the plugin is active.
+ * It ensures the configuration table exists and has the correct structure,
+ * creating it with default values if necessary.
+ *
+ * @global DBmysql $DB GLPI database instance
  *
  * @return void
  */
@@ -86,9 +139,9 @@ function plugin_kanbanlooksgood_check_and_upgrade()
 {
     global $DB;
 
-    // Verificar si la tabla de configuración existe
+    // Check if configuration table exists
     if (!$DB->tableExists('glpi_plugin_kanbanlooksgood_configs')) {
-        // Crear tabla de configuración
+        // Create configuration table
         $query = "CREATE TABLE IF NOT EXISTS `glpi_plugin_kanbanlooksgood_configs` (
             `id` int(11) NOT NULL AUTO_INCREMENT,
             `show_priority` tinyint(1) NOT NULL DEFAULT '1',
@@ -99,7 +152,7 @@ function plugin_kanbanlooksgood_check_and_upgrade()
 
         $DB->query($query);
 
-        // Insertar configuración por defecto
+        // Insert default configuration
         $DB->insert(
             'glpi_plugin_kanbanlooksgood_configs',
             [
@@ -112,9 +165,12 @@ function plugin_kanbanlooksgood_check_and_upgrade()
 }
 
 /**
- * Check prerequisites before installing
+ * Check prerequisites before installing the plugin
  *
- * @return boolean
+ * Verifies that the GLPI version meets the minimum requirements
+ * before allowing plugin installation.
+ *
+ * @return bool True if prerequisites are met, false otherwise
  */
 function plugin_kanbanlooksgood_check_prerequisites()
 {
@@ -126,10 +182,15 @@ function plugin_kanbanlooksgood_check_prerequisites()
 }
 
 /**
- * Check configuration before installing
+ * Check configuration process status
  *
- * @param boolean $verbose
- * @return boolean
+ * This function is called during plugin configuration to verify
+ * that the configuration process was successful. Currently returns
+ * true as no special configuration checks are needed.
+ *
+ * @param bool $verbose Whether to output verbose messages
+ *
+ * @return bool True if configuration is valid, false otherwise
  */
 function plugin_kanbanlooksgood_check_config($verbose = false)
 {
@@ -137,16 +198,20 @@ function plugin_kanbanlooksgood_check_config($verbose = false)
 }
 
 /**
- * Install hook
- * REQUIRED BY GLPI
+ * Plugin installation process
  *
- * @return bool
+ * Creates the necessary database tables and inserts default configuration
+ * values when the plugin is installed for the first time.
+ *
+ * @global DBmysql $DB GLPI database instance
+ *
+ * @return bool True if installation succeeded, false otherwise
  */
 function plugin_kanbanlooksgood_install()
 {
     global $DB;
 
-    // Crear tabla de configuración
+    // Create configuration table
     $query = "CREATE TABLE IF NOT EXISTS `glpi_plugin_kanbanlooksgood_configs` (
         `id` int(11) NOT NULL AUTO_INCREMENT,
         `show_priority` tinyint(1) NOT NULL DEFAULT '1',
@@ -159,7 +224,7 @@ function plugin_kanbanlooksgood_install()
         return false;
     }
 
-    // Insertar configuración por defecto si no existe
+    // Insert default configuration if none exists
     $iterator = $DB->request([
         'FROM' => 'glpi_plugin_kanbanlooksgood_configs',
         'LIMIT' => 1
@@ -180,16 +245,20 @@ function plugin_kanbanlooksgood_install()
 }
 
 /**
- * Uninstall hook
- * REQUIRED BY GLPI
+ * Plugin uninstallation process
  *
- * @return bool
+ * Removes all database tables created by the plugin, cleaning up
+ * all plugin data from the GLPI database.
+ *
+ * @global DBmysql $DB GLPI database instance
+ *
+ * @return bool True if uninstallation succeeded, false otherwise
  */
 function plugin_kanbanlooksgood_uninstall()
 {
     global $DB;
 
-    // Eliminar tabla de configuración
+    // Remove all plugin tables
     $tables = [
         'glpi_plugin_kanbanlooksgood_configs'
     ];
