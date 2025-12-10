@@ -36,7 +36,7 @@ use Glpi\Plugin\Hooks;
 /**
  * Plugin version
  */
-define('PLUGIN_KANBANLOOKSGOOD_VERSION', '1.3.0');
+define('PLUGIN_KANBANLOOKSGOOD_VERSION', '1.3.1');
 
 /**
  * Minimum GLPI version required (inclusive)
