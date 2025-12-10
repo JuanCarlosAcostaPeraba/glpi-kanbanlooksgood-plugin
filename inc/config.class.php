@@ -29,21 +29,44 @@ if (!defined('GLPI_ROOT')) {
 }
 
 /**
- * Configuration class for Kanban Looks Good plugin
+ * Configuration management class for Kanban Looks Good plugin
+ *
+ * Handles plugin configuration storage, retrieval, and form display.
+ * Manages settings for priority display, duration display, and work hours
+ * per day calculation.
+ *
+ * @package   KanbanLooksGood
+ * @author    Juan Carlos Acosta Perabá
+ * @copyright Copyright (C) 2024-2025 by Juan Carlos Acosta Perabá
+ * @license   GPLv3+ http://www.gnu.org/licenses/gpl.html
  */
 class PluginKanbanlooksgoodConfig extends CommonDBTM
 {
+    /**
+     * Rights management - requires config permission
+     *
+     * @var string
+     */
     public static $rightname = 'config';
 
     /**
-     * Get the singleton configuration
+     * Get plugin configuration
      *
-     * @return array Configuration array with default values
+     * Retrieves the current plugin configuration from the database.
+     * Returns default values if no configuration exists yet.
+     *
+     * @global DBmysql $DB GLPI database instance
+     *
+     * @return array Configuration array with keys:
+     *               - show_priority: Whether to display priority badge (1|0)
+     *               - show_duration: Whether to display planned duration (1|0)
+     *               - work_hours_per_day: Hours per work day (1-24)
      */
     public static function getConfig()
     {
         global $DB;
 
+        // Default configuration values
         $config = [
             'show_priority' => 1,
             'show_duration' => 1,
@@ -66,24 +89,47 @@ class PluginKanbanlooksgoodConfig extends CommonDBTM
     }
 
     /**
-     * Save configuration
+     * Save plugin configuration
      *
-     * @param array $input Configuration to save
-     * @return bool Success
+     * Validates and saves the plugin configuration to the database.
+     * Performs input validation and sanitization before saving.
+     *
+     * @param array $input Configuration data from form submission with keys:
+     *                     - show_priority: Display priority badge (1|0)
+     *                     - show_duration: Display planned duration (1|0)
+     *                     - work_hours_per_day: Hours per work day (1-24)
+     *
+     * @global DBmysql $DB GLPI database instance
+     *
+     * @return bool True if save was successful, false otherwise
      */
     public static function saveConfig($input)
     {
         global $DB;
 
-        // Los valores vienen de Dropdown::showYesNo(), que envía "1" o "0"
-        $show_priority = (int)($input['show_priority'] ?? 0);
-        $show_duration = (int)($input['show_duration'] ?? 0);
-        $work_hours_per_day = (int)($input['work_hours_per_day'] ?? 7);
+        // Sanitize and validate input values
+        // Values come from Dropdown::showYesNo(), which sends "1" or "0"
+        $show_priority = isset($input['show_priority']) ? (int)$input['show_priority'] : 0;
+        $show_duration = isset($input['show_duration']) ? (int)$input['show_duration'] : 0;
+        $work_hours_per_day = isset($input['work_hours_per_day']) ? (int)$input['work_hours_per_day'] : 7;
 
-        // Validar horas por día (entre 1 y 24)
+        // Validate show_priority (must be 0 or 1)
+        $show_priority = ($show_priority === 1) ? 1 : 0;
+
+        // Validate show_duration (must be 0 or 1)
+        $show_duration = ($show_duration === 1) ? 1 : 0;
+
+        // Validate work hours per day (must be between 1 and 24)
         if ($work_hours_per_day < 1 || $work_hours_per_day > 24) {
-            $work_hours_per_day = 7;
+            $work_hours_per_day = 7; // Reset to default if invalid
         }
+
+        // Prepare data for database
+        $data = [
+            'show_priority' => $show_priority,
+            'show_duration' => $show_duration,
+            'work_hours_per_day' => $work_hours_per_day
+        ];
 
         $iterator = $DB->request([
             'FROM' => 'glpi_plugin_kanbanlooksgood_configs',
@@ -91,36 +137,33 @@ class PluginKanbanlooksgoodConfig extends CommonDBTM
         ]);
 
         if (count($iterator) > 0) {
-            // Update
-            $data = $iterator->current();
+            // Update existing configuration
+            $config = $iterator->current();
             $result = $DB->update(
                 'glpi_plugin_kanbanlooksgood_configs',
-                [
-                    'show_priority' => $show_priority,
-                    'show_duration' => $show_duration,
-                    'work_hours_per_day' => $work_hours_per_day
-                ],
-                ['id' => $data['id']]
+                $data,
+                ['id' => $config['id']]
             );
 
-            return $result;
+            return $result !== false;
         } else {
-            // Insert
+            // Insert new configuration
             $result = $DB->insert(
                 'glpi_plugin_kanbanlooksgood_configs',
-                [
-                    'show_priority' => $show_priority,
-                    'show_duration' => $show_duration,
-                    'work_hours_per_day' => $work_hours_per_day
-                ]
+                $data
             );
 
-            return $result;
+            return $result !== false;
         }
     }
 
     /**
      * Display configuration form
+     *
+     * Renders the plugin configuration form in the GLPI admin interface.
+     * Requires UPDATE permission on config to be displayed.
+     *
+     * @global array $CFG_GLPI GLPI configuration
      *
      * @return void
      */
@@ -138,36 +181,69 @@ class PluginKanbanlooksgoodConfig extends CommonDBTM
         echo "<form name='form' method='post' action='" . $CFG_GLPI['root_doc'] . "/plugins/kanbanlooksgood/front/config.form.php'>";
         echo Html::hidden('_glpi_csrf_token', ['value' => Session::getNewCSRFToken()]);
 
-        echo "<table class='tab_cadre_fixe'>";
+        echo "<table class='tab_cadre_fixe' style='max-width: 800px; margin: 20px auto;'>";
+
+        // Header
         echo "<tr class='tab_bg_1'>";
-        echo "<th colspan='2'>" . __('Kanban Looks Good - Configuration', 'kanbanlooksgood') . "</th>";
+        echo "<th colspan='2'>";
+        echo "<i class='fas fa-cog'></i> ";
+        echo __('Kanban Looks Good - Configuration', 'kanbanlooksgood');
+        echo "</th>";
         echo "</tr>";
 
-        // Mostrar badge de prioridad
+        // Description row
+        echo "<tr class='tab_bg_2'>";
+        echo "<td colspan='2' style='text-align: center; padding: 15px;'>";
+        echo "<p style='margin: 0; color: #666;'>";
+        echo __('Configure how priority and duration information is displayed on Project Kanban cards', 'kanbanlooksgood');
+        echo "</p>";
+        echo "</td>";
+        echo "</tr>";
+
+        // Show priority badge option
         echo "<tr class='tab_bg_1'>";
-        echo "<td>" . __('Show Priority Badge', 'kanbanlooksgood') . "</td>";
-        echo "<td>";
+        echo "<td style='width: 60%; padding: 12px;'>";
+        echo "<strong>" . __('Show Priority Badge', 'kanbanlooksgood') . "</strong>";
+        echo "<br><small style='color: #666;'>";
+        echo __('Display the priority badge on Kanban cards using GLPI native colors', 'kanbanlooksgood');
+        echo "</small>";
+        echo "</td>";
+        echo "<td style='padding: 12px;'>";
         Dropdown::showYesNo('show_priority', $config['show_priority']);
         echo "</td>";
         echo "</tr>";
 
-        // Mostrar duración planificada
+        // Show planned duration option
         echo "<tr class='tab_bg_1'>";
-        echo "<td>" . __('Show Planned Duration', 'kanbanlooksgood') . "</td>";
-        echo "<td>";
+        echo "<td style='padding: 12px;'>";
+        echo "<strong>" . __('Show Planned Duration', 'kanbanlooksgood') . "</strong>";
+        echo "<br><small style='color: #666;'>";
+        echo __('Display the planned duration on Kanban cards in a human-readable format', 'kanbanlooksgood');
+        echo "</small>";
+        echo "</td>";
+        echo "<td style='padding: 12px;'>";
         Dropdown::showYesNo('show_duration', $config['show_duration']);
         echo "</td>";
         echo "</tr>";
 
-        // Horas por día laboral
+        // Work hours per day option
         echo "<tr class='tab_bg_1'>";
-        echo "<td>" . __('Work Hours per Day', 'kanbanlooksgood') . "</td>";
-        echo "<td>";
-        echo "<input type='number' name='work_hours_per_day' value='" . $config['work_hours_per_day'] . "' min='1' max='24' style='width: 80px;' />";
-        echo " " . __('hours', 'kanbanlooksgood');
+        echo "<td style='padding: 12px;'>";
+        echo "<strong>" . __('Work Hours per Day', 'kanbanlooksgood') . "</strong>";
+        echo "<br><small style='color: #666;'>";
+        echo __('Number of work hours per day for duration calculations (1-24)', 'kanbanlooksgood');
+        echo "</small>";
+        echo "</td>";
+        echo "<td style='padding: 12px;'>";
+        echo "<input type='number' name='work_hours_per_day' ";
+        echo "value='" . htmlspecialchars($config['work_hours_per_day'], ENT_QUOTES, 'UTF-8') . "' ";
+        echo "min='1' max='24' required ";
+        echo "style='width: 80px; padding: 5px;' /> ";
+        echo __('hours', 'kanbanlooksgood');
         echo "</td>";
         echo "</tr>";
 
+        // Submit button
         echo "<tr class='tab_bg_1'>";
         echo "<td colspan='2' class='center'>";
         echo "<input type='submit' name='update_config' value='" . __('Save') . "' class='btn btn-primary'>";
@@ -180,10 +256,13 @@ class PluginKanbanlooksgoodConfig extends CommonDBTM
     }
 
     /**
-     * Get translated name
+     * Get the localized name of the plugin
      *
-     * @param integer $nb Number of items
-     * @return string Name
+     * Returns the translated name of the plugin for display in GLPI interface.
+     *
+     * @param int $nb Number of items (unused, kept for compatibility)
+     *
+     * @return string Localized plugin name
      */
     public static function getTypeName($nb = 0)
     {
