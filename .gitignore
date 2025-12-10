@@ -1,16 +1,84 @@
+# IDE and Editor Files
+.vscode/
+.idea/
+*.sublime-*
 .DS_Store
-.idea
-.vscode
+Thumbs.db
+
+# Temporary Files
+*~
+*.swp
+*.swo
+*.bak
+*.tmp
+*.temp
+
+# Logs
+*.log
+logs/
+
+# OS Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Desktop.ini
+
+# Composer
+/vendor/
+composer.phar
+composer.lock
+
+# Node modules (if any future JS tooling is added)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+yarn.lock
+
+# Build artifacts
+/dist/
+/build/
+*.zip
+*.tar.gz
+
+# Coverage and testing
+/coverage/
+.phpunit.result.cache
+phpunit.xml
+
+# Environment files
 .env
 .env.local
-.env.development.local
-.env.test.local
-.env.production.local
-.env.development
-.env.test
-.env.production
+.env.*.local
 
-versions
+# Cache files
+cache/
+*.cache
 
-# Release ZIPs
-*.zip
+# Database dumps
+*.sql
+*.sqlite
+
+# GLPI specific
+files/_cache/
+files/_cron/
+files/_dumps/
+files/_log/
+files/_pictures/
+files/_plugins/
+files/_sessions/
+files/_tmp/
+
+# Plugin development
+*.orig
+*.rej
+.php_cs.cache
+.phpcs-cache
+
+# Backup files
+*.backup
+*~backup

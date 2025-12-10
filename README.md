@@ -101,6 +101,141 @@ kanbanlooksgood/
 
 - English (en_GB) - Default
 - Spanish (es_ES)
+- French (fr_FR)
+
+Contributions for additional languages are welcome!
+
+## ❓ FAQ
+
+### Does this plugin modify GLPI core files?
+
+No. This plugin uses GLPI's hook system exclusively. It doesn't modify any core files, making it safe and easy to maintain.
+
+### Will this work with custom themes?
+
+Yes. The plugin uses GLPI's native priority colors and styling, so it adapts automatically to custom themes, including dark mode.
+
+### Can I disable priority or duration display separately?
+
+Yes. Go to **Configuration → Plugins → Kanban Looks Good** to toggle each feature independently.
+
+### Does this affect performance?
+
+No significant performance impact. The plugin:
+- Uses existing GLPI metadata hooks
+- Minimizes database queries
+- Loads only on Kanban pages
+
+### Can I use this with GLPI 9.x?
+
+No. This plugin requires GLPI 10.0.0 or higher. For older versions, you would need to modify the code significantly.
+
+### What happens if I uninstall the plugin?
+
+All plugin data (configuration) is removed from the database. Your Kanban will return to its original appearance without any side effects.
+
+## 🔧 Troubleshooting
+
+### Priority badges not showing
+
+**Possible causes:**
+- Priority display is disabled in plugin configuration
+- Project has no priority set
+- Browser cache needs to be cleared
+
+**Solutions:**
+1. Check plugin configuration: **Configuration → Plugins → Kanban Looks Good**
+2. Verify project has priority set: **Projects → Edit → Priority**
+3. Clear browser cache and reload the page
+4. Check browser console for JavaScript errors (F12)
+
+### Duration not displaying
+
+**Possible causes:**
+- Duration display is disabled in plugin configuration
+- Project/Task has no planned duration
+- Work hours configuration is invalid
+
+**Solutions:**
+1. Check plugin configuration is enabled
+2. Verify tasks have planned duration set
+3. Ensure "Work Hours per Day" is between 1-24
+4. Check that ProjectTasks are properly linked to the Project
+
+### JavaScript console errors
+
+**Possible causes:**
+- Conflicting JavaScript from other plugins
+- Outdated browser version
+- GLPI version incompatibility
+
+**Solutions:**
+1. Disable other plugins temporarily to identify conflicts
+2. Update browser to latest version
+3. Verify GLPI version compatibility (10.0.x or 11.0.x)
+4. Check GLPI logs in `files/_log/`
+
+### Styling looks broken
+
+**Possible causes:**
+- CSS caching issues
+- Theme conflicts
+- Custom CSS overrides
+
+**Solutions:**
+1. Clear browser cache (Ctrl+Shift+R or Cmd+Shift+R)
+2. Disable browser extensions temporarily
+3. Check for custom CSS in your theme that might conflict
+4. Try in incognito/private browsing mode
+
+### Plugin doesn't appear in plugin list
+
+**Possible causes:**
+- Incorrect installation directory
+- File permissions issues
+- Missing required files
+
+**Solutions:**
+1. Verify folder is named `kanbanlooksgood` (lowercase, no spaces)
+2. Check folder is in `glpi/plugins/` directory
+3. Verify file permissions (readable by web server)
+4. Check that `setup.php` exists and is valid PHP
+
+### Getting "Access Denied" error
+
+**Possible causes:**
+- Insufficient user permissions
+- Session expired
+
+**Solutions:**
+1. Verify you have "config" UPDATE permission
+2. Log out and log back in
+3. Contact your GLPI administrator for permissions
+
+## 🐛 Reporting Issues
+
+If you encounter a bug or have a feature request:
+
+1. Check existing [issues](https://github.com/JuanCarlosAcostaPeraba/kanbanlooksgood/issues)
+2. Use the appropriate issue template
+3. Include:
+   - GLPI version
+   - Plugin version
+   - PHP version
+   - Browser and OS
+   - Steps to reproduce
+   - Error messages or screenshots
+
+## 🤝 Contributing
+
+Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+Ways to contribute:
+- Report bugs
+- Suggest features
+- Submit pull requests
+- Improve documentation
+- Add translations
 
 ## 📝 License
 
@@ -111,3 +246,18 @@ Fully compatible with GLPI plugin licensing requirements.
 ## 👤 Author
 
 Developed by **[Juan Carlos Acosta Perabá](https://github.com/JuanCarlosAcostaPeraba)** for **HUC – Hospital Universitario de Canarias**.
+
+## 🌟 Support
+
+If this plugin helps you, please consider:
+- ⭐ Starring the repository
+- 📢 Sharing it with the GLPI community
+- 🐛 Reporting issues
+- 💡 Contributing improvements
+
+## 📊 Stats
+
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/JuanCarlosAcostaPeraba/kanbanlooksgood)
+![GitHub](https://img.shields.io/github/license/JuanCarlosAcostaPeraba/kanbanlooksgood)
+![GitHub issues](https://img.shields.io/github/issues/JuanCarlosAcostaPeraba/kanbanlooksgood)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/JuanCarlosAcostaPeraba/kanbanlooksgood)
