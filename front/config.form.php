@@ -28,7 +28,7 @@
  * @author    Juan Carlos Acosta Perabá
  * @copyright Copyright (C) 2024-2025 by Juan Carlos Acosta Perabá
  * @license   GPLv3+ http://www.gnu.org/licenses/gpl.html
- * @link      https://github.com/JuanCarlosAcostaPeraba/kanbanlooksgood
+ * @link      https://github.com/JuanCarlosAcostaPeraba/glpi-kanbanlooksgood-plugin
  * -------------------------------------------------------------------------
  */
 

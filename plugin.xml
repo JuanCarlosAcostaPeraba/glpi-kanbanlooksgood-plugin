@@ -6,12 +6,13 @@
 	<state>stable</state>
 
 	<!-- 40x40px or bigger. Marketplace will resize it. -->
-	<logo>https://raw.githubusercontent.com/JuanCarlosAcostaPeraba/kanbanlooksgood/main/assets/logo.png</logo>
+	<logo>https://raw.githubusercontent.com/JuanCarlosAcostaPeraba/glpi-kanbanlooksgood-plugin/main/assets/logo.png</logo>
 
 	<description>
 		<short>
 			<en>Enhances the GLPI Project Kanban by displaying Priority and Planned Duration on cards.</en>
 			<es_ES>Mejora el Kanban de Proyectos de GLPI mostrando Prioridad y Duración Planificada.</es_ES>
+			<fr_FR>Améliore le Kanban de projet GLPI en affichant la priorité et la durée planifiée sur les cartes.</fr_FR>
 		</short>
 		<long>
 			<en><![CDATA[
@@ -22,7 +23,15 @@ It automatically adds:
 - **Priority badge** (same format and colors used by GLPI core)
 - **Planned Duration** for Projects and Project Tasks
 - **Soft background shading** based on project priority
+- **Configurable settings** to customize display preferences
 - **Non-intrusive UI improvements** without modifying GLPI core
+
+**Features:**
+- Toggle priority and duration display independently
+- Configurable work hours per day (1-24 hours)
+- Multi-language support (English, Spanish, French)
+- Dark theme compatible
+- Zero performance impact
 
 Designed to improve visibility, clarity and project management efficiency.
 
@@ -37,20 +46,51 @@ Añade automáticamente:
 - **Badge de prioridad** (mismo formato y colores del core de GLPI)
 - **Duración planificada** para Proyectos y Tareas
 - **Sombreado de fondo** suavizado según la prioridad
+- **Configuración personalizable** para ajustar las preferencias de visualización
 - Mejoras **no intrusivas**, sin modificar el core de GLPI
+
+**Características:**
+- Activar/desactivar prioridad y duración de forma independiente
+- Horas de trabajo por día configurables (1-24 horas)
+- Soporte multiidioma (Inglés, Español, Francés)
+- Compatible con tema oscuro
+- Sin impacto en el rendimiento
 
 Diseñado para mejorar la visibilidad y la gestión diaria de proyectos.
 
 Desarrollado para uso real en el **Hospital Universitario de Canarias (HUC)**.
 			]]></es_ES>
+
+			<fr_FR><![CDATA[
+**Kanban Looks Good** est un plugin d'amélioration visuelle pour le module Kanban de projet de GLPI.
+
+Il ajoute automatiquement :
+
+- **Badge de priorité** (même format et couleurs que le cœur de GLPI)
+- **Durée planifiée** pour les projets et les tâches de projet
+- **Ombrage d'arrière-plan doux** basé sur la priorité du projet
+- **Paramètres configurables** pour personnaliser les préférences d'affichage
+- **Améliorations UI non intrusives** sans modifier le cœur de GLPI
+
+**Fonctionnalités :**
+- Activer/désactiver l'affichage de la priorité et de la durée indépendamment
+- Heures de travail par jour configurables (1-24 heures)
+- Support multilingue (Anglais, Espagnol, Français)
+- Compatible thème sombre
+- Aucun impact sur les performances
+
+Conçu pour améliorer la visibilité, la clarté et l'efficacité de la gestion de projet.
+
+Développé pour une utilisation réelle à l'**Hospital Universitario de Canarias (HUC)**.
+			]]></fr_FR>
 		</long>
 	</description>
 
-	<homepage>https://github.com/JuanCarlosAcostaPeraba/kanbanlooksgood</homepage>
+	<homepage>https://github.com/JuanCarlosAcostaPeraba/glpi-kanbanlooksgood-plugin</homepage>
 
-	<download>https://github.com/JuanCarlosAcostaPeraba/kanbanlooksgood/releases</download>
-	<issues>https://github.com/JuanCarlosAcostaPeraba/kanbanlooksgood/issues</issues>
-	<readme>https://raw.githubusercontent.com/JuanCarlosAcostaPeraba/kanbanlooksgood/main/README.md</readme>
+	<download>https://github.com/JuanCarlosAcostaPeraba/glpi-kanbanlooksgood-plugin/releases</download>
+	<issues>https://github.com/JuanCarlosAcostaPeraba/glpi-kanbanlooksgood-plugin/issues</issues>
+	<readme>https://raw.githubusercontent.com/JuanCarlosAcostaPeraba/glpi-kanbanlooksgood-plugin/main/README.md</readme>
 
 	<authors>
 		<author>Juan Carlos Acosta Perabá</author>
@@ -60,27 +100,27 @@ Desarrollado para uso real en el **Hospital Universitario de Canarias (HUC)**.
 		<version>
 			<num>1.3.0</num>
 			<compatibility>~11.0.0</compatibility>
-			<download_url>https://github.com/JuanCarlosAcostaPeraba/kanbanlooksgood/releases/download/v1.3.0/kanbanlooksgood-1.3.0.zip</download_url>
+			<download_url>https://github.com/JuanCarlosAcostaPeraba/glpi-kanbanlooksgood-plugin/releases/download/v1.3.0/kanbanlooksgood-1.3.0.zip</download_url>
 		</version>
 		<version>
 			<num>1.3.0</num>
 			<compatibility>~10.0.0</compatibility>
-			<download_url>https://github.com/JuanCarlosAcostaPeraba/kanbanlooksgood/releases/download/v1.3.0/kanbanlooksgood-1.3.0.zip</download_url>
+			<download_url>https://github.com/JuanCarlosAcostaPeraba/glpi-kanbanlooksgood-plugin/releases/download/v1.3.0/kanbanlooksgood-1.3.0.zip</download_url>
 		</version>
 		<version>
 			<num>1.2.1</num>
 			<compatibility>~10.0.0</compatibility>
-			<download_url>https://github.com/JuanCarlosAcostaPeraba/kanbanlooksgood/releases/download/v1.2.1/kanbanlooksgood-1.2.1.zip</download_url>
+			<download_url>https://github.com/JuanCarlosAcostaPeraba/glpi-kanbanlooksgood-plugin/releases/download/v1.2.1/kanbanlooksgood-1.2.1.zip</download_url>
 		</version>
 		<version>
 			<num>1.2.0</num>
 			<compatibility>~10.0.0</compatibility>
-			<download_url>https://github.com/JuanCarlosAcostaPeraba/kanbanlooksgood/releases/download/v1.2.0/kanbanlooksgood-1.2.0.zip</download_url>
+			<download_url>https://github.com/JuanCarlosAcostaPeraba/glpi-kanbanlooksgood-plugin/releases/download/v1.2.0/kanbanlooksgood-1.2.0.zip</download_url>
 		</version>
 		<version>
 			<num>1.0.0</num>
 			<compatibility>~10.0.0</compatibility>
-			<download_url>https://github.com/JuanCarlosAcostaPeraba/kanbanlooksgood/releases/download/v1.0.0/kanbanlooksgood-1.0.0.zip</download_url>
+			<download_url>https://github.com/JuanCarlosAcostaPeraba/glpi-kanbanlooksgood-plugin/releases/download/v1.0.0/kanbanlooksgood-1.0.0.zip</download_url>
 		</version>
 	</versions>
 
@@ -99,24 +139,29 @@ Desarrollado para uso real en el **Hospital Universitario de Canarias (HUC)**.
 			<tag>priority</tag>
 			<tag>duration</tag>
 			<tag>ui-enhancement</tag>
-			<tag>glpi</tag>
-			<tag>plugin</tag>
+			<tag>configuration</tag>
 		</en>
 		<es_ES>
 			<tag>kanban</tag>
 			<tag>proyectos</tag>
 			<tag>prioridad</tag>
 			<tag>duracion</tag>
-			<tag>glpi</tag>
-			<tag>plugin</tag>
+			<tag>configuracion</tag>
 		</es_ES>
+		<fr_FR>
+			<tag>kanban</tag>
+			<tag>projets</tag>
+			<tag>priorité</tag>
+			<tag>durée</tag>
+			<tag>configuration</tag>
+		</fr_FR>
 	</tags>
 
 	<screenshots>
-		<screenshot>https://raw.githubusercontent.com/JuanCarlosAcostaPeraba/kanbanlooksgood/main/assets/screenshots/screenshot-kanban-overview.png</screenshot>
-		<screenshot>https://raw.githubusercontent.com/JuanCarlosAcostaPeraba/kanbanlooksgood/main/assets/screenshots/screenshot-card-priority.png</screenshot>
-		<screenshot>https://raw.githubusercontent.com/JuanCarlosAcostaPeraba/kanbanlooksgood/main/assets/screenshots/screenshot-before-after.png</screenshot>
-		<screenshot>https://raw.githubusercontent.com/JuanCarlosAcostaPeraba/kanbanlooksgood/main/assets/screenshots/screenshot-project-duration.png</screenshot>
+		<screenshot>https://raw.githubusercontent.com/JuanCarlosAcostaPeraba/glpi-kanbanlooksgood-plugin/main/assets/screenshots/screenshot-kanban-overview.png</screenshot>
+		<screenshot>https://raw.githubusercontent.com/JuanCarlosAcostaPeraba/glpi-kanbanlooksgood-plugin/main/assets/screenshots/screenshot-card-priority.png</screenshot>
+		<screenshot>https://raw.githubusercontent.com/JuanCarlosAcostaPeraba/glpi-kanbanlooksgood-plugin/main/assets/screenshots/screenshot-before-after.png</screenshot>
+		<screenshot>https://raw.githubusercontent.com/JuanCarlosAcostaPeraba/glpi-kanbanlooksgood-plugin/main/assets/screenshots/screenshot-project-duration.png</screenshot>
 	</screenshots>
 
 </root>

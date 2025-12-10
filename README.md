@@ -1,6 +1,6 @@
 # Kanban Looks Good
 
-[![Version](https://img.shields.io/badge/Version-1.3.0-green.svg)](https://github.com/JuanCarlosAcostaPeraba/kanbanlooksgood/releases)
+[![Version](https://img.shields.io/badge/Version-1.3.0-green.svg)](https://github.com/JuanCarlosAcostaPeraba/glpi-kanbanlooksgood-plugin/releases)
 [![GLPI Marketplace](https://img.shields.io/badge/GLPI_Marketplace-Available-orange.svg)](https://plugins.glpi-project.org/#/plugin/kanbanlooksgood)
 [![GLPI](https://img.shields.io/badge/GLPI-10.0.x_|_11.0.x-blue.svg)](https://glpi-project.org)
 [![License: GPLv3+](https://img.shields.io/badge/License-GPLv3+-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.html)
@@ -33,7 +33,7 @@ A lightweight and non-intrusive GLPI plugin that enhances the **Project Kanban**
 
 ### Option 2: Manual Installation
 
-1. Download the latest release from [GitHub Releases](https://github.com/JuanCarlosAcostaPeraba/kanbanlooksgood/releases)
+1. Download the latest release from [GitHub Releases](https://github.com/JuanCarlosAcostaPeraba/glpi-kanbanlooksgood-plugin/releases)
 2. Extract and copy the folder `kanbanlooksgood` into:
 
     ```
@@ -216,7 +216,7 @@ All plugin data (configuration) is removed from the database. Your Kanban will r
 
 If you encounter a bug or have a feature request:
 
-1. Check existing [issues](https://github.com/JuanCarlosAcostaPeraba/kanbanlooksgood/issues)
+1. Check existing [issues](https://github.com/JuanCarlosAcostaPeraba/glpi-kanbanlooksgood-plugin/issues)
 2. Use the appropriate issue template
 3. Include:
    - GLPI version
@@ -228,9 +228,7 @@ If you encounter a bug or have a feature request:
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please read [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
-
-Ways to contribute:
+Contributions are welcome! Ways to contribute:
 - Report bugs
 - Suggest features
 - Submit pull requests
@@ -257,7 +255,7 @@ If this plugin helps you, please consider:
 
 ## 📊 Stats
 
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/JuanCarlosAcostaPeraba/kanbanlooksgood)
-![GitHub](https://img.shields.io/github/license/JuanCarlosAcostaPeraba/kanbanlooksgood)
-![GitHub issues](https://img.shields.io/github/issues/JuanCarlosAcostaPeraba/kanbanlooksgood)
-![GitHub pull requests](https://img.shields.io/github/issues-pr/JuanCarlosAcostaPeraba/kanbanlooksgood)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/JuanCarlosAcostaPeraba/glpi-kanbanlooksgood-plugin)
+![GitHub](https://img.shields.io/github/license/JuanCarlosAcostaPeraba/glpi-kanbanlooksgood-plugin)
+![GitHub issues](https://img.shields.io/github/issues/JuanCarlosAcostaPeraba/glpi-kanbanlooksgood-plugin)
+![GitHub pull requests](https://img.shields.io/github/issues-pr/JuanCarlosAcostaPeraba/glpi-kanbanlooksgood-plugin)
