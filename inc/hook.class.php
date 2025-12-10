@@ -181,18 +181,38 @@ class PluginKanbanlooksgoodHook
 
             if ($priority_value > 0) {
                 // Get priority color from GLPI configuration
-                // GLPI stores these colors in session as glpipriority_X
-                $priority_color = $_SESSION['glpipriority_' . $priority_value] ?? '';
-                $priority_name = CommonITILObject::getPriorityName($priority_value);
+                // GLPI 10.x stores these colors in session as glpipriority_X
+                // GLPI 11.x may use a different approach
+                $priority_color = '';
+                if (isset($_SESSION['glpipriority_' . $priority_value])) {
+                    $priority_color = $_SESSION['glpipriority_' . $priority_value];
+                }
+
+                // Get priority name - compatible with both versions
+                $priority_name = '';
+                if (class_exists('CommonITILObject')) {
+                    $priority_name = CommonITILObject::getPriorityName($priority_value);
+                } else {
+                    // Fallback for GLPI 11 if CommonITILObject doesn't exist
+                    $priorities = [
+                        1 => __('Very low'),
+                        2 => __('Low'),
+                        3 => __('Medium'),
+                        4 => __('High'),
+                        5 => __('Very high'),
+                        6 => __('Major')
+                    ];
+                    $priority_name = $priorities[$priority_value] ?? '';
+                }
 
                 if ($priority_color) {
                     $metadata['priority_color'] = $priority_color;
 
-                    // Generar HTML del badge de prioridad (igual que en Search.php)
-                    // Formato: <div class='priority_block'><span style='background: color'></span>&nbsp;Nombre</div>
-                    $metadata['priority'] = "<div class='priority_block' style='border-color: $priority_color'>" .
-                        "<span style='background: $priority_color'></span>&nbsp;" .
-                        htmlspecialchars($priority_name) .
+                    // Generate priority badge HTML (same as in Search.php)
+                    // Format: <div class='priority_block'><span style='background: color'></span>&nbsp;Name</div>
+                    $metadata['priority'] = "<div class='priority_block' style='border-color: " . htmlspecialchars($priority_color, ENT_QUOTES, 'UTF-8') . "'>" .
+                        "<span style='background: " . htmlspecialchars($priority_color, ENT_QUOTES, 'UTF-8') . "'></span>&nbsp;" .
+                        htmlspecialchars($priority_name, ENT_QUOTES, 'UTF-8') .
                         "</div>";
                 } else {
                     // If no color available, show text only

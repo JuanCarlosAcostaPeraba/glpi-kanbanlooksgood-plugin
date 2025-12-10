@@ -31,12 +31,10 @@
  * -------------------------------------------------------------------------
  */
 
-use Glpi\Plugin\Hooks;
-
 /**
  * Plugin version
  */
-define('PLUGIN_KANBANLOOKSGOOD_VERSION', '1.3.1');
+define('PLUGIN_KANBANLOOKSGOOD_VERSION', '1.3.2');
 
 /**
  * Minimum GLPI version required (inclusive)
@@ -44,9 +42,9 @@ define('PLUGIN_KANBANLOOKSGOOD_VERSION', '1.3.1');
 define('PLUGIN_KANBANLOOKSGOOD_MIN_GLPI', '10.0.0');
 
 /**
- * Maximum GLPI version supported (exclusive)
+ * Maximum GLPI version supported (inclusive)
  */
-define('PLUGIN_KANBANLOOKSGOOD_MAX_GLPI', '11.0.99');
+define('PLUGIN_KANBANLOOKSGOOD_MAX_GLPI', '11.1.99');
 
 /**
  * Initialize plugin hooks
@@ -75,7 +73,8 @@ function plugin_init_kanbanlooksgood()
         plugin_kanbanlooksgood_check_and_upgrade();
 
         // Register Kanban item metadata hook (backend processing)
-        $PLUGIN_HOOKS[Hooks::KANBAN_ITEM_METADATA]['kanbanlooksgood'] = [
+        // GLPI 10.x and 11.x compatible
+        $PLUGIN_HOOKS['kanban_item_metadata']['kanbanlooksgood'] = [
             'PluginKanbanlooksgoodHook',
             'kanbanItemMetadata'
         ];
@@ -150,16 +149,17 @@ function plugin_kanbanlooksgood_check_and_upgrade()
             PRIMARY KEY (`id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
 
-        $DB->query($query);
+        $DB->queryOrDie($query, $DB->error());
 
         // Insert default configuration
-        $DB->insert(
+        $DB->insertOrDie(
             'glpi_plugin_kanbanlooksgood_configs',
             [
                 'show_priority' => 1,
                 'show_duration' => 1,
                 'work_hours_per_day' => 7
-            ]
+            ],
+            $DB->error()
         );
     }
 }
@@ -211,37 +211,40 @@ function plugin_kanbanlooksgood_install()
 {
     global $DB;
 
-    // Create configuration table
-    $query = "CREATE TABLE IF NOT EXISTS `glpi_plugin_kanbanlooksgood_configs` (
-        `id` int(11) NOT NULL AUTO_INCREMENT,
-        `show_priority` tinyint(1) NOT NULL DEFAULT '1',
-        `show_duration` tinyint(1) NOT NULL DEFAULT '1',
-        `work_hours_per_day` int(11) NOT NULL DEFAULT '7',
-        PRIMARY KEY (`id`)
-    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
+    try {
+        // Create configuration table
+        $query = "CREATE TABLE IF NOT EXISTS `glpi_plugin_kanbanlooksgood_configs` (
+            `id` int(11) NOT NULL AUTO_INCREMENT,
+            `show_priority` tinyint(1) NOT NULL DEFAULT '1',
+            `show_duration` tinyint(1) NOT NULL DEFAULT '1',
+            `work_hours_per_day` int(11) NOT NULL DEFAULT '7',
+            PRIMARY KEY (`id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
 
-    if (!$DB->query($query)) {
+        $DB->queryOrDie($query, $DB->error());
+
+        // Insert default configuration if none exists
+        $iterator = $DB->request([
+            'FROM' => 'glpi_plugin_kanbanlooksgood_configs',
+            'LIMIT' => 1
+        ]);
+
+        if (count($iterator) === 0) {
+            $DB->insertOrDie(
+                'glpi_plugin_kanbanlooksgood_configs',
+                [
+                    'show_priority' => 1,
+                    'show_duration' => 1,
+                    'work_hours_per_day' => 7
+                ],
+                $DB->error()
+            );
+        }
+
+        return true;
+    } catch (Exception $e) {
         return false;
     }
-
-    // Insert default configuration if none exists
-    $iterator = $DB->request([
-        'FROM' => 'glpi_plugin_kanbanlooksgood_configs',
-        'LIMIT' => 1
-    ]);
-
-    if (count($iterator) === 0) {
-        $DB->insert(
-            'glpi_plugin_kanbanlooksgood_configs',
-            [
-                'show_priority' => 1,
-                'show_duration' => 1,
-                'work_hours_per_day' => 7
-            ]
-        );
-    }
-
-    return true;
 }
 
 /**

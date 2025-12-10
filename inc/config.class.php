@@ -107,53 +107,61 @@ class PluginKanbanlooksgoodConfig extends CommonDBTM
     {
         global $DB;
 
-        // Sanitize and validate input values
-        // Values come from Dropdown::showYesNo(), which sends "1" or "0"
-        $show_priority = isset($input['show_priority']) ? (int)$input['show_priority'] : 0;
-        $show_duration = isset($input['show_duration']) ? (int)$input['show_duration'] : 0;
-        $work_hours_per_day = isset($input['work_hours_per_day']) ? (int)$input['work_hours_per_day'] : 7;
+        try {
+            // Sanitize and validate input values
+            // Values come from Dropdown::showYesNo(), which sends "1" or "0"
+            $show_priority = isset($input['show_priority']) ? (int)$input['show_priority'] : 0;
+            $show_duration = isset($input['show_duration']) ? (int)$input['show_duration'] : 0;
+            $work_hours_per_day = isset($input['work_hours_per_day']) ? (int)$input['work_hours_per_day'] : 7;
 
-        // Validate show_priority (must be 0 or 1)
-        $show_priority = ($show_priority === 1) ? 1 : 0;
+            // Validate show_priority (must be 0 or 1)
+            $show_priority = ($show_priority === 1) ? 1 : 0;
 
-        // Validate show_duration (must be 0 or 1)
-        $show_duration = ($show_duration === 1) ? 1 : 0;
+            // Validate show_duration (must be 0 or 1)
+            $show_duration = ($show_duration === 1) ? 1 : 0;
 
-        // Validate work hours per day (must be between 1 and 24)
-        if ($work_hours_per_day < 1 || $work_hours_per_day > 24) {
-            $work_hours_per_day = 7; // Reset to default if invalid
-        }
+            // Validate work hours per day (must be between 1 and 24)
+            if ($work_hours_per_day < 1 || $work_hours_per_day > 24) {
+                $work_hours_per_day = 7; // Reset to default if invalid
+            }
 
-        // Prepare data for database
-        $data = [
-            'show_priority' => $show_priority,
-            'show_duration' => $show_duration,
-            'work_hours_per_day' => $work_hours_per_day
-        ];
+            // Prepare data for database
+            $data = [
+                'show_priority' => $show_priority,
+                'show_duration' => $show_duration,
+                'work_hours_per_day' => $work_hours_per_day
+            ];
 
-        $iterator = $DB->request([
-            'FROM' => 'glpi_plugin_kanbanlooksgood_configs',
-            'LIMIT' => 1
-        ]);
+            $iterator = $DB->request([
+                'FROM' => 'glpi_plugin_kanbanlooksgood_configs',
+                'LIMIT' => 1
+            ]);
 
-        if (count($iterator) > 0) {
-            // Update existing configuration
-            $config = $iterator->current();
-            $result = $DB->update(
-                'glpi_plugin_kanbanlooksgood_configs',
-                $data,
-                ['id' => $config['id']]
-            );
+            if (count($iterator) > 0) {
+                // Update existing configuration
+                $config = $iterator->current();
+                $result = $DB->update(
+                    'glpi_plugin_kanbanlooksgood_configs',
+                    $data,
+                    ['id' => $config['id']]
+                );
 
-            return $result !== false;
-        } else {
-            // Insert new configuration
-            $result = $DB->insert(
-                'glpi_plugin_kanbanlooksgood_configs',
-                $data
-            );
+                return $result !== false;
+            } else {
+                // Insert new configuration
+                $result = $DB->insert(
+                    'glpi_plugin_kanbanlooksgood_configs',
+                    $data
+                );
 
-            return $result !== false;
+                return $result !== false;
+            }
+        } catch (Exception $e) {
+            // Log error if possible
+            if (function_exists('Toolbox::logError')) {
+                Toolbox::logError($e->getMessage());
+            }
+            return false;
         }
     }
 

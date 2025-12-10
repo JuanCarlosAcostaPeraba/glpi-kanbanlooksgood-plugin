@@ -42,8 +42,11 @@ Session::checkRight('config', UPDATE);
 
 // Handle configuration update submission
 if (isset($_POST['update_config'])) {
+    // Verify CSRF token
+    Session::checkCSRF($_POST);
+
     $result = PluginKanbanlooksgoodConfig::saveConfig($_POST);
-    
+
     if ($result) {
         Session::addMessageAfterRedirect(
             __('Configuration saved successfully', 'kanbanlooksgood'),
@@ -57,16 +60,27 @@ if (isset($_POST['update_config'])) {
             ERROR
         );
     }
-    
+
     Html::back();
 } else {
     // Display configuration form
-    Html::header(
-        __('Kanban Looks Good', 'kanbanlooksgood'),
-        $_SERVER['PHP_SELF'],
-        'config',
-        'plugins'
-    );
+    // GLPI 11 compatible header
+    if (version_compare(GLPI_VERSION, '11.0', '>=')) {
+        Html::header(
+            __('Kanban Looks Good', 'kanbanlooksgood'),
+            $_SERVER['PHP_SELF'],
+            'config',
+            'config',
+            'plugins'
+        );
+    } else {
+        Html::header(
+            __('Kanban Looks Good', 'kanbanlooksgood'),
+            $_SERVER['PHP_SELF'],
+            'config',
+            'plugins'
+        );
+    }
 
     PluginKanbanlooksgoodConfig::showConfigForm();
 
