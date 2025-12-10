@@ -1,6 +1,6 @@
 # Kanban Looks Good
 
-[![Version](https://img.shields.io/badge/Version-1.3.2-green.svg)](https://github.com/JuanCarlosAcostaPeraba/glpi-kanbanlooksgood-plugin/releases)
+[![Version](https://img.shields.io/badge/Version-1.3.3-green.svg)](https://github.com/JuanCarlosAcostaPeraba/glpi-kanbanlooksgood-plugin/releases)
 [![GLPI Marketplace](https://img.shields.io/badge/GLPI_Marketplace-Available-orange.svg)](https://plugins.glpi-project.org/#/plugin/kanbanlooksgood)
 [![GLPI](https://img.shields.io/badge/GLPI-10.0.x_|_11.0.x-blue.svg)](https://glpi-project.org)
 [![License: GPLv3+](https://img.shields.io/badge/License-GPLv3+-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.html)
@@ -8,8 +8,8 @@
 
 A lightweight and non-intrusive GLPI plugin that enhances the **Project Kanban** by displaying **Priority** and **Planned Duration** directly on each card — without modifying any GLPI core files.
 
-> **🎉 v1.3.2 - Now fully compatible with GLPI 11!**  
-> This version fixes all compatibility issues with GLPI 11.x while maintaining backward compatibility with GLPI 10.x.
+> **🎉 v1.3.3 - Hotfix for GLPI 10/11!**  
+> This version fixes a CSRF validation error in GLPI 10.x while maintaining full compatibility with both GLPI 10.x and 11.x.
 
 ## ✨ Features
 
@@ -112,17 +112,18 @@ kanbanlooksgood/
 - **`kanban_item_metadata`** (GLPI 10.x and 11.x compatible)
   Injects priority, planned duration, and colors directly into card metadata so the frontend can render everything instantly.
 
-## 🆕 What's New in v1.3.2
+## 🆕 What's New in v1.3.3
 
-**Full GLPI 11 Compatibility** - Major fixes:
-- ✅ Fixed: Plugin no longer breaks GLPI 11 installation
-- ✅ Fixed: Removed deprecated `Glpi\Plugin\Hooks` namespace usage
-- ✅ Fixed: Updated database methods to GLPI 11 standards
-- ✅ Fixed: Enhanced session handling for priority colors
-- ✅ Fixed: Added CSRF validation for security
-- ✅ Fixed: CommonITILObject compatibility with fallback
-- ✅ Improved: Error handling with try-catch blocks
-- ✅ Improved: HTML sanitization for security
+**Hotfix Release** - Configuration form fix:
+- ✅ Fixed: CSRF validation error in GLPI 10 when saving configuration
+- ✅ Fixed: "La acción que ha solicitado no está permitida" error resolved
+- ✅ Improved: Better CSRF token handling for both GLPI 10.x and 11.x
+
+**Previous v1.3.2 - Full GLPI 11 Compatibility:**
+- ✅ Plugin no longer breaks GLPI 11 installation
+- ✅ Removed deprecated `Glpi\Plugin\Hooks` namespace usage
+- ✅ Updated database methods to GLPI 11 standards
+- ✅ Enhanced session handling for priority colors
 
 See [CHANGELOG.md](CHANGELOG.md) for detailed technical changes.
 
@@ -136,11 +137,12 @@ Contributions for additional languages are welcome!
 
 ## 🔄 Version History
 
-| Version | GLPI 10.x | GLPI 11.x | Status |
-|---------|-----------|-----------|--------|
-| 1.3.2   | ✅ Yes    | ✅ Yes    | **Current - Recommended** |
-| 1.3.1   | ✅ Yes    | ❌ No     | Deprecated (breaks GLPI 11) |
-| 1.3.0   | ✅ Yes    | ❌ No     | Deprecated |
+| Version | GLPI 10.x | GLPI 11.x | Status | Notes |
+|---------|-----------|-----------|--------|-------|
+| 1.3.3   | ✅ Yes    | ✅ Yes    | **Current - Recommended** | Fixed CSRF error |
+| 1.3.2   | ⚠️ Partial | ✅ Yes    | Superseded | CSRF error in GLPI 10 |
+| 1.3.1   | ✅ Yes    | ❌ No     | Deprecated | Breaks GLPI 11 |
+| 1.3.0   | ✅ Yes    | ❌ No     | Deprecated | Breaks GLPI 11 |
 
 ## ❓ FAQ
 

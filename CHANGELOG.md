@@ -1,5 +1,18 @@
 # Changelog - Kanban Looks Good
 
+## Version 1.3.3 - Hotfix CSRF (2025-12-10)
+
+### 🔧 Fixed
+- **CSRF validation error en GLPI 10**: Corregido el error "La acción que ha solicitado no está permitida" al guardar la configuración en GLPI 10
+- **Compatibilidad mejorada**: Eliminada validación CSRF manual que causaba conflictos, ahora GLPI maneja la validación automáticamente
+
+### 📝 Technical Details
+- Eliminado `Session::checkCSRF($_POST)` de `front/config.form.php`
+- El token CSRF se sigue generando pero la validación la hace GLPI internamente
+- Esto asegura compatibilidad total con GLPI 10.x y 11.x
+
+---
+
 ## Version 1.3.2 - GLPI 10.x / 11.x Compatible (2025-12-10)
 
 ### 🔧 Fixed

@@ -42,9 +42,6 @@ Session::checkRight('config', UPDATE);
 
 // Handle configuration update submission
 if (isset($_POST['update_config'])) {
-    // Verify CSRF token
-    Session::checkCSRF($_POST);
-
     $result = PluginKanbanlooksgoodConfig::saveConfig($_POST);
 
     if ($result) {

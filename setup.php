@@ -34,7 +34,7 @@
 /**
  * Plugin version
  */
-define('PLUGIN_KANBANLOOKSGOOD_VERSION', '1.3.2');
+define('PLUGIN_KANBANLOOKSGOOD_VERSION', '1.3.3');
 
 /**
  * Minimum GLPI version required (inclusive)
