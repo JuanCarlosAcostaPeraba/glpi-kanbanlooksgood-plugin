@@ -31,20 +31,29 @@
  * -------------------------------------------------------------------------
  */
 
+use Glpi\Plugin\Hooks;
+
+if (defined('PLUGIN_KANBANLOOKSGOOD_SETUP_LOADED')) {
+    return;
+}
+define('PLUGIN_KANBANLOOKSGOOD_SETUP_LOADED', true);
+
 /**
  * Plugin version
  */
-define('PLUGIN_KANBANLOOKSGOOD_VERSION', '1.3.3');
+define('PLUGIN_KANBANLOOKSGOOD_VERSION', '2.0.0');
 
 /**
  * Minimum GLPI version required (inclusive)
+ * Version 2.0.0+ only supports GLPI 11.x
+ * For GLPI 10.x, use version 1.3.x
  */
-define('PLUGIN_KANBANLOOKSGOOD_MIN_GLPI', '10.0.0');
+define('PLUGIN_KANBANLOOKSGOOD_MIN_GLPI', '11.0.0');
 
 /**
- * Maximum GLPI version supported (inclusive)
+ * Maximum GLPI version supported (exclusive)
  */
-define('PLUGIN_KANBANLOOKSGOOD_MAX_GLPI', '11.1.99');
+define('PLUGIN_KANBANLOOKSGOOD_MAX_GLPI', '11.0.99');
 
 /**
  * Initialize plugin hooks
@@ -67,28 +76,34 @@ function plugin_init_kanbanlooksgood()
     // Mark plugin as CSRF compliant
     $PLUGIN_HOOKS['csrf_compliant']['kanbanlooksgood'] = true;
 
-    if (Plugin::isPluginActive('kanbanlooksgood')) {
-
-        // Verify and upgrade database structure if needed
-        plugin_kanbanlooksgood_check_and_upgrade();
-
-        // Register Kanban item metadata hook (backend processing)
-        // GLPI 10.x and 11.x compatible
-        $PLUGIN_HOOKS['kanban_item_metadata']['kanbanlooksgood'] = [
-            'PluginKanbanlooksgoodHook',
-            'kanbanItemMetadata'
-        ];
-
-        // Register frontend JavaScript files
-        $PLUGIN_HOOKS['add_javascript']['kanbanlooksgood'][] = 'js/kanban.js';
-        $PLUGIN_HOOKS['add_javascript']['kanbanlooksgood'][] = 'js/config_inject.js';
-
-        // Register frontend CSS files
-        $PLUGIN_HOOKS['add_css']['kanbanlooksgood'][] = 'css/kanban.css';
-
-        // Register configuration page
-        $PLUGIN_HOOKS['config_page']['kanbanlooksgood'] = 'front/config.form.php';
+    if (!Plugin::isPluginActive('kanbanlooksgood')) {
+        return;
     }
+
+    // Include plugin classes
+    // GLPI 11 autoloads classes, but we ensure they're available
+    if (!class_exists('PluginKanbanlooksgoodConfig')) {
+        require_once __DIR__ . '/inc/config.class.php';
+    }
+    if (!class_exists('PluginKanbanlooksgoodHook')) {
+        require_once __DIR__ . '/inc/hook.class.php';
+    }
+
+    // Verify and upgrade database structure if needed
+    plugin_kanbanlooksgood_check_and_upgrade();
+
+    // Register hooks for Kanban content injection
+    // PRE_KANBAN_CONTENT: injects content at the beginning of the card
+    $PLUGIN_HOOKS[Hooks::PRE_KANBAN_CONTENT]['kanbanlooksgood'] = [
+        'PluginKanbanlooksgoodHook',
+        'addKanbanContent'
+    ];
+
+    // Register frontend CSS files (GLPI 11 serves from public/)
+    $PLUGIN_HOOKS[Hooks::ADD_CSS]['kanbanlooksgood'][] = 'css/kanban.css';
+
+    // Register configuration page
+    $PLUGIN_HOOKS['config_page']['kanbanlooksgood'] = 'front/config.form.php';
 }
 
 /**
@@ -138,46 +153,63 @@ function plugin_kanbanlooksgood_check_and_upgrade()
 {
     global $DB;
 
-    // Check if configuration table exists
+    // Check if configuration table exists (GLPI 11)
     if (!$DB->tableExists('glpi_plugin_kanbanlooksgood_configs')) {
-        // Create configuration table
-        $query = "CREATE TABLE IF NOT EXISTS `glpi_plugin_kanbanlooksgood_configs` (
-            `id` int(11) NOT NULL AUTO_INCREMENT,
-            `show_priority` tinyint(1) NOT NULL DEFAULT '1',
-            `show_duration` tinyint(1) NOT NULL DEFAULT '1',
-            `work_hours_per_day` int(11) NOT NULL DEFAULT '7',
-            PRIMARY KEY (`id`)
-        ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
+        try {
+            $query = "CREATE TABLE IF NOT EXISTS `glpi_plugin_kanbanlooksgood_configs` (
+                `id` int NOT NULL AUTO_INCREMENT,
+                `show_priority` tinyint NOT NULL DEFAULT '1',
+                `show_duration` tinyint NOT NULL DEFAULT '1',
+                `work_hours_per_day` int NOT NULL DEFAULT '7',
+                PRIMARY KEY (`id`)
+            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
 
-        $DB->queryOrDie($query, $DB->error());
+            $DB->doQuery($query);
 
-        // Insert default configuration
-        $DB->insertOrDie(
-            'glpi_plugin_kanbanlooksgood_configs',
-            [
-                'show_priority' => 1,
-                'show_duration' => 1,
-                'work_hours_per_day' => 7
-            ],
-            $DB->error()
-        );
+            // Insert default configuration
+            $DB->insert(
+                'glpi_plugin_kanbanlooksgood_configs',
+                [
+                    'show_priority' => 1,
+                    'show_duration' => 1,
+                    'work_hours_per_day' => 7
+                ]
+            );
+        } catch (\Exception $e) {
+            // Log but don't fail - allow plugin to continue
+        }
     }
 }
 
 /**
  * Check prerequisites before installing the plugin
  *
- * Verifies that the GLPI version meets the minimum requirements
+ * Verifies that the GLPI version meets the minimum and maximum requirements
  * before allowing plugin installation.
  *
  * @return bool True if prerequisites are met, false otherwise
  */
 function plugin_kanbanlooksgood_check_prerequisites()
 {
+    // GLPI 11 version check
     if (version_compare(GLPI_VERSION, PLUGIN_KANBANLOOKSGOOD_MIN_GLPI, 'lt')) {
-        echo __('This plugin requires GLPI >= ') . PLUGIN_KANBANLOOKSGOOD_MIN_GLPI;
+        echo sprintf(
+            'This plugin requires GLPI >= %s. Current version: %s. For GLPI 10.x, please use plugin version 1.3.x',
+            PLUGIN_KANBANLOOKSGOOD_MIN_GLPI,
+            GLPI_VERSION
+        );
         return false;
     }
+
+    if (version_compare(GLPI_VERSION, PLUGIN_KANBANLOOKSGOOD_MAX_GLPI, 'gt')) {
+        echo sprintf(
+            'This plugin is not compatible with GLPI > %s. Current version: %s',
+            PLUGIN_KANBANLOOKSGOOD_MAX_GLPI,
+            GLPI_VERSION
+        );
+        return false;
+    }
+
     return true;
 }
 
@@ -212,16 +244,16 @@ function plugin_kanbanlooksgood_install()
     global $DB;
 
     try {
-        // Create configuration table
+        // Create configuration table for GLPI 11
         $query = "CREATE TABLE IF NOT EXISTS `glpi_plugin_kanbanlooksgood_configs` (
-            `id` int(11) NOT NULL AUTO_INCREMENT,
-            `show_priority` tinyint(1) NOT NULL DEFAULT '1',
-            `show_duration` tinyint(1) NOT NULL DEFAULT '1',
-            `work_hours_per_day` int(11) NOT NULL DEFAULT '7',
+            `id` int NOT NULL AUTO_INCREMENT,
+            `show_priority` tinyint NOT NULL DEFAULT '1',
+            `show_duration` tinyint NOT NULL DEFAULT '1',
+            `work_hours_per_day` int NOT NULL DEFAULT '7',
             PRIMARY KEY (`id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
 
-        $DB->queryOrDie($query, $DB->error());
+        $DB->doQuery($query) or die("Error creating table: " . $DB->error());
 
         // Insert default configuration if none exists
         $iterator = $DB->request([
@@ -230,20 +262,19 @@ function plugin_kanbanlooksgood_install()
         ]);
 
         if (count($iterator) === 0) {
-            $DB->insertOrDie(
+            $DB->insert(
                 'glpi_plugin_kanbanlooksgood_configs',
                 [
                     'show_priority' => 1,
                     'show_duration' => 1,
                     'work_hours_per_day' => 7
-                ],
-                $DB->error()
-            );
+                ]
+            ) or die("Error inserting default config: " . $DB->error());
         }
 
         return true;
-    } catch (Exception $e) {
-        return false;
+    } catch (\Exception $e) {
+        die("Installation failed: " . $e->getMessage());
     }
 }
 
