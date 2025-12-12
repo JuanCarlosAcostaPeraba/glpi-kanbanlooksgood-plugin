@@ -1,15 +1,16 @@
 # Kanban Looks Good
 
-[![Version](https://img.shields.io/badge/Version-1.3.3-green.svg)](https://github.com/JuanCarlosAcostaPeraba/glpi-kanbanlooksgood-plugin/releases)
+[![Version](https://img.shields.io/badge/Version-2.0.0-green.svg)](https://github.com/JuanCarlosAcostaPeraba/glpi-kanbanlooksgood-plugin/releases)
 [![GLPI Marketplace](https://img.shields.io/badge/GLPI_Marketplace-Available-orange.svg)](https://plugins.glpi-project.org/#/plugin/kanbanlooksgood)
-[![GLPI](https://img.shields.io/badge/GLPI-10.0.x_|_11.0.x-blue.svg)](https://glpi-project.org)
+[![GLPI](https://img.shields.io/badge/GLPI-11.0.x-blue.svg)](https://glpi-project.org)
 [![License: GPLv3+](https://img.shields.io/badge/License-GPLv3+-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.html)
 [![Maintained](https://img.shields.io/badge/Maintained-yes-success.svg)]()
 
 A lightweight and non-intrusive GLPI plugin that enhances the **Project Kanban** by displaying **Priority** and **Planned Duration** directly on each card — without modifying any GLPI core files.
 
-> **🎉 v1.3.3 - Hotfix for GLPI 10/11!**  
-> This version fixes a CSRF validation error in GLPI 10.x while maintaining full compatibility with both GLPI 10.x and 11.x.
+> **🚀 v2.0.0 - GLPI 11 Native!**  
+> This version is built specifically for GLPI 11.0.x using modern GLPI practices.  
+> **Breaking change**: No longer supports GLPI 10.x. For GLPI 10.x, use version 1.3.x.
 
 ## ✨ Features
 
@@ -23,20 +24,23 @@ A lightweight and non-intrusive GLPI plugin that enhances the **Project Kanban**
 
 ## 📦 Requirements
 
-- GLPI **10.0.x** or **11.0.x** ✅
-- PHP **8.1+** (recommended for GLPI 11)
+- GLPI **11.0.x** ✅
+- PHP **8.1+** (required by GLPI 11)
 
-### ⚠️ Important for GLPI 11 Users
+### ⚠️ Important Version Information
 
-**Version 1.3.2 fixes all compatibility issues with GLPI 11!** 
+**Version 2.0.0+ is built exclusively for GLPI 11.0.x**
 
-If you experienced issues with version 1.3.1 breaking your GLPI 11 installation:
-1. Remove the old version from `plugins/kanbanlooksgood/`
-2. Install version 1.3.2
-3. Clear GLPI cache: `rm -rf files/_cache/*`
-4. Activate the plugin normally
+- ✅ **GLPI 11.0.x users**: Use version 2.0.0+
+- ⚠️ **GLPI 10.x users**: Use version [1.3.4](https://github.com/JuanCarlosAcostaPeraba/glpi-kanbanlooksgood-plugin/releases/tag/v1.3.4)
 
-For detailed upgrade instructions, see [UPGRADE_GUIDE.md](UPGRADE_GUIDE.md)
+This version includes:
+- **Server-side rendering** compatible with GLPI 11's Vue.js Kanban
+- Assets served from `public/` directory
+- Uses `PRE_KANBAN_CONTENT` hook for direct HTML injection
+- Simplified codebase without legacy compatibility layers
+- Modern database methods (`query()`, `insert()`)
+- No JavaScript dependencies
 
 ## 🚀 Installation
 
@@ -71,10 +75,19 @@ Available options:
 
 ## 🧩 How it works
 
+### Architecture (GLPI 11)
+
+This plugin uses **server-side rendering** to inject metadata directly into Kanban cards during the data preparation phase:
+
+1. **Hook**: Uses `PRE_KANBAN_CONTENT` hook (GLPI 11 native)
+2. **Rendering**: Generates HTML with inline styles on the server
+3. **Vue.js Compatible**: Works seamlessly with GLPI 11's Vue.js-based Kanban
+4. **No JavaScript**: All rendering is done in PHP - no client-side manipulation needed
+
 ### Priority
 
 - Uses GLPI's priority configuration (badge + color)
-- Applies priority color to the card header
+- Applies priority color to the card header and background (lightened)
 - Softened version of the same color is used as card background
 
 ### Planned Duration
@@ -112,18 +125,26 @@ kanbanlooksgood/
 - **`kanban_item_metadata`** (GLPI 10.x and 11.x compatible)
   Injects priority, planned duration, and colors directly into card metadata so the frontend can render everything instantly.
 
-## 🆕 What's New in v1.3.3
+## 🆕 What's New in v2.0.0
 
-**Hotfix Release** - Configuration form fix:
-- ✅ Fixed: CSRF validation error in GLPI 10 when saving configuration
-- ✅ Fixed: "La acción que ha solicitado no está permitida" error resolved
-- ✅ Improved: Better CSRF token handling for both GLPI 10.x and 11.x
+**⚠️ BREAKING CHANGE - GLPI 11 Only:**
+- 🚀 Complete rewrite for GLPI 11.0.x
+- ✅ Uses GLPI 11 native `Hooks` namespace
+- ✅ Assets served from `public/` directory (GLPI 11 standard)
+- ✅ Cleaner codebase without GLPI 10 compatibility layers
+- ✅ Uses `doQuery()` and modern GLPI 11 database methods
+- ✅ Simplified installation and upgrade process
+- ✅ Better integration with GLPI 11 architecture
 
-**Previous v1.3.2 - Full GLPI 11 Compatibility:**
-- ✅ Plugin no longer breaks GLPI 11 installation
-- ✅ Removed deprecated `Glpi\Plugin\Hooks` namespace usage
-- ✅ Updated database methods to GLPI 11 standards
-- ✅ Enhanced session handling for priority colors
+**Why v2.0.0?**
+- Version 2.0.0 drops GLPI 10.x support to provide the best experience for GLPI 11 users
+- Follows GLPI 11 best practices and modern plugin architecture
+- Cleaner, more maintainable code
+- Easier to update for future GLPI 11.x versions
+
+**For GLPI 10.x users:**
+- Continue using version [1.3.4](https://github.com/JuanCarlosAcostaPeraba/glpi-kanbanlooksgood-plugin/releases/tag/v1.3.4)
+- Version 1.3.x will remain available but won't receive new features
 
 See [CHANGELOG.md](CHANGELOG.md) for detailed technical changes.
 
@@ -139,8 +160,10 @@ Contributions for additional languages are welcome!
 
 | Version | GLPI 10.x | GLPI 11.x | Status | Notes |
 |---------|-----------|-----------|--------|-------|
-| 1.3.3   | ✅ Yes    | ✅ Yes    | **Current - Recommended** | Fixed CSRF error |
-| 1.3.2   | ⚠️ Partial | ✅ Yes    | Superseded | CSRF error in GLPI 10 |
+| 2.0.0   | ❌ No     | ✅ Yes    | **Current - Recommended** | GLPI 11 native, breaking change |
+| 1.3.4   | ✅ Yes    | ⚠️ Partial | Maintenance | For GLPI 10.x users |
+| 1.3.3   | ✅ Yes    | ⚠️ Partial | Deprecated | CSRF fix |
+| 1.3.2   | ⚠️ Partial | ✅ Yes    | Deprecated | CSRF error in GLPI 10 |
 | 1.3.1   | ✅ Yes    | ❌ No     | Deprecated | Breaks GLPI 11 |
 | 1.3.0   | ✅ Yes    | ❌ No     | Deprecated | Breaks GLPI 11 |
 
