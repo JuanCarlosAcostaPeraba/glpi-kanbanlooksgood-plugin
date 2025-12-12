@@ -1,0 +1,75 @@
+/**
+ * -------------------------------------------------------------------------
+ * Kanban Looks Good - CSS for GLPI 11
+ * -------------------------------------------------------------------------
+ *
+ * Estilos para las mejoras visuales del Kanban de Proyectos
+ * Compatible con GLPI 11.x y Vue.js
+ * -------------------------------------------------------------------------
+ */
+
+/* Container for metadata (priority and duration) */
+.kanbanlooksgood-metadata {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 8px 10px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    font-size: 12px;
+}
+
+/* Priority section */
+.kanbanlooksgood-priority {
+    display: flex;
+    align-items: center;
+}
+
+.kanbanlooksgood-priority .priority_block {
+    display: inline-flex;
+    align-items: center;
+    padding: 2px 8px;
+    border-radius: 3px;
+    border-width: 1px;
+    border-style: solid;
+    font-weight: 500;
+    font-size: 11px;
+}
+
+.kanbanlooksgood-priority .priority_block span {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 4px;
+}
+
+/* Duration section */
+.kanbanlooksgood-duration {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #666;
+    font-weight: 400;
+    font-size: 11px;
+}
+
+.kanbanlooksgood-duration i {
+    font-size: 14px;
+}
+
+/* Dark theme adjustments */
+[data-theme="dark"] .kanbanlooksgood-metadata,
+.dark .kanbanlooksgood-metadata {
+    border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
+[data-theme="dark"] .kanbanlooksgood-duration,
+.dark .kanbanlooksgood-duration {
+    color: #aaa;
+}
+
+/* Ensure the metadata appears at the top of card content */
+.kanban-plugin-content .kanbanlooksgood-metadata:first-child {
+    margin-top: -8px;
+}
