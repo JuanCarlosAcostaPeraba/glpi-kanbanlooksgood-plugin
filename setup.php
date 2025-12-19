@@ -292,14 +292,32 @@ function plugin_kanbanlooksgood_uninstall()
 {
     global $DB;
 
-    // Remove all plugin tables
-    $tables = [
-        'glpi_plugin_kanbanlooksgood_configs'
-    ];
+    try {
+        // Remove all plugin tables
+        $tables = [
+            'glpi_plugin_kanbanlooksgood_configs'
+        ];
 
-    foreach ($tables as $table) {
-        $DB->query("DROP TABLE IF EXISTS `$table`");
+        foreach ($tables as $table) {
+            // DROP TABLE IF EXISTS is safe and won't fail if table doesn't exist
+            $result = $DB->doQuery("DROP TABLE IF EXISTS `$table`");
+            if ($result === false) {
+                // Log error but continue with other tables
+                // Don't fail uninstall if table doesn't exist or already dropped
+                $error = $DB->error();
+                if ($error && class_exists('Toolbox') && method_exists('Toolbox', 'logError')) {
+                    Toolbox::logError("Error dropping table $table: " . $error);
+                }
+            }
+        }
+
+        return true;
+    } catch (\Exception $e) {
+        // Log error if possible
+        if (class_exists('Toolbox') && method_exists('Toolbox', 'logError')) {
+            Toolbox::logError("Uninstall failed: " . $e->getMessage());
+        }
+        // Return false to indicate uninstall failed
+        return false;
     }
-
-    return true;
 }
