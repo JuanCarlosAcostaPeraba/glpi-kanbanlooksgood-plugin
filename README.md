@@ -102,18 +102,19 @@ This plugin uses **server-side rendering** to inject metadata directly into Kanb
 kanbanlooksgood/
 ├── setup.php                  # Plugin registration + hooks
 ├── plugin.xml                 # Plugin metadata for GLPI marketplace
+├── hook.php                   # Legacy hook file (optional)
 ├── inc/
 │   ├── hook.class.php         # Injects metadata into Kanban cards
 │   └── config.class.php       # Plugin configuration management
 ├── front/
 │   └── config.form.php        # Configuration form handler
-├── js/
-│   ├── kanban.js              # Frontend enhancements (color + metadata bar)
-│   └── config_inject.js       # Configuration injection for JavaScript
-├── css/
-│   └── kanban.css             # Styling for metadata section
+├── public/
+│   └── css/
+│       └── kanban.css         # Styling for metadata section (GLPI 11 structure)
 ├── locales/
-│   └── es_ES.php              # Spanish translations
+│   ├── en_GB.php              # English translations
+│   ├── es_ES.php              # Spanish translations
+│   └── fr_FR.php              # French translations
 ├── assets/
 │   ├── logo.png               # Plugin logo
 │   └── screenshots/           # Screenshots for marketplace
@@ -122,8 +123,8 @@ kanbanlooksgood/
 
 ## 🔌 Hooks Used
 
-- **`kanban_item_metadata`** (GLPI 10.x and 11.x compatible)
-  Injects priority, planned duration, and colors directly into card metadata so the frontend can render everything instantly.
+- **`PRE_KANBAN_CONTENT`** (GLPI 11 native)
+  Injects priority, planned duration, and HTML content directly into Kanban cards during server-side rendering. All styling and metadata is generated in PHP, ensuring compatibility with GLPI 11's Vue.js-based Kanban.
 
 ## 🆕 What's New in v2.1.0
 
@@ -136,8 +137,9 @@ kanbanlooksgood/
 - ✅ Simplified installation and upgrade process
 - ✅ Better integration with GLPI 11 architecture
 
-**Why v2.0.0+?**
+**Why v2.1.0?**
 - Version 2.0.0+ drops GLPI 10.x support to provide the best experience for GLPI 11 users
+- Version 2.1.0 includes improvements and updated documentation
 - Follows GLPI 11 best practices and modern plugin architecture
 - Cleaner, more maintainable code
 - Easier to update for future GLPI 11.x versions
@@ -185,9 +187,10 @@ Yes. Go to **Configuration → Plugins → Kanban Looks Good** to toggle each fe
 ### Does this affect performance?
 
 No significant performance impact. The plugin:
-- Uses existing GLPI metadata hooks
+- Uses GLPI 11's PRE_KANBAN_CONTENT hook for server-side rendering
 - Minimizes database queries
 - Loads only on Kanban pages
+- No client-side JavaScript processing required
 
 ### Can I use this with GLPI 9.x?
 
@@ -209,8 +212,8 @@ All plugin data (configuration) is removed from the database. Your Kanban will r
 **Solutions:**
 1. Check plugin configuration: **Configuration → Plugins → Kanban Looks Good**
 2. Verify project has priority set: **Projects → Edit → Priority**
-3. Clear browser cache and reload the page
-4. Check browser console for JavaScript errors (F12)
+3. Clear browser cache and reload the page (Ctrl+Shift+R or Cmd+Shift+R)
+4. Verify you're using GLPI 11.0.x
 
 ### Duration not displaying
 
@@ -225,18 +228,18 @@ All plugin data (configuration) is removed from the database. Your Kanban will r
 3. Ensure "Work Hours per Day" is between 1-24
 4. Check that ProjectTasks are properly linked to the Project
 
-### JavaScript console errors
+### Plugin not working after upgrade
 
 **Possible causes:**
-- Conflicting JavaScript from other plugins
-- Outdated browser version
-- GLPI version incompatibility
+- Upgraded from GLPI 10.x to 11.x without updating plugin
+- Plugin cache needs to be cleared
+- Database structure needs update
 
 **Solutions:**
-1. Disable other plugins temporarily to identify conflicts
-2. Update browser to latest version
-3. Verify GLPI version compatibility (10.0.x or 11.0.x)
-4. Check GLPI logs in `files/_log/`
+1. Verify you're using plugin version 2.1.0+ with GLPI 11.0.x
+2. Disable and re-enable the plugin in GLPI
+3. Clear GLPI cache: **Configuration → General → Clear cache**
+4. Check GLPI logs in `files/_log/` for errors
 
 ### Styling looks broken
 
