@@ -1,6 +1,6 @@
 # Kanban Looks Good
 
-[![Version](https://img.shields.io/badge/Version-2.0.0-green.svg)](https://github.com/JuanCarlosAcostaPeraba/glpi-kanbanlooksgood-plugin/releases)
+[![Version](https://img.shields.io/badge/Version-2.1.0-green.svg)](https://github.com/JuanCarlosAcostaPeraba/glpi-kanbanlooksgood-plugin/releases)
 [![GLPI Marketplace](https://img.shields.io/badge/GLPI_Marketplace-Available-orange.svg)](https://plugins.glpi-project.org/#/plugin/kanbanlooksgood)
 [![GLPI](https://img.shields.io/badge/GLPI-11.0.x-blue.svg)](https://glpi-project.org)
 [![License: GPLv3+](https://img.shields.io/badge/License-GPLv3+-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.html)
@@ -8,7 +8,7 @@
 
 A lightweight and non-intrusive GLPI plugin that enhances the **Project Kanban** by displaying **Priority** and **Planned Duration** directly on each card — without modifying any GLPI core files.
 
-> **🚀 v2.0.0 - GLPI 11 Native!**  
+> **🚀 v2.1.0 - GLPI 11 Native!**  
 > This version is built specifically for GLPI 11.0.x using modern GLPI practices.  
 > **Breaking change**: No longer supports GLPI 10.x. For GLPI 10.x, use version 1.3.x.
 
@@ -31,7 +31,7 @@ A lightweight and non-intrusive GLPI plugin that enhances the **Project Kanban**
 
 **Version 2.0.0+ is built exclusively for GLPI 11.0.x**
 
-- ✅ **GLPI 11.0.x users**: Use version 2.0.0+
+- ✅ **GLPI 11.0.x users**: Use version 2.1.0+
 - ⚠️ **GLPI 10.x users**: Use version [1.3.4](https://github.com/JuanCarlosAcostaPeraba/glpi-kanbanlooksgood-plugin/releases/tag/v1.3.4)
 
 This version includes:
@@ -125,7 +125,7 @@ kanbanlooksgood/
 - **`kanban_item_metadata`** (GLPI 10.x and 11.x compatible)
   Injects priority, planned duration, and colors directly into card metadata so the frontend can render everything instantly.
 
-## 🆕 What's New in v2.0.0
+## 🆕 What's New in v2.1.0
 
 **⚠️ BREAKING CHANGE - GLPI 11 Only:**
 - 🚀 Complete rewrite for GLPI 11.0.x
@@ -136,8 +136,8 @@ kanbanlooksgood/
 - ✅ Simplified installation and upgrade process
 - ✅ Better integration with GLPI 11 architecture
 
-**Why v2.0.0?**
-- Version 2.0.0 drops GLPI 10.x support to provide the best experience for GLPI 11 users
+**Why v2.0.0+?**
+- Version 2.0.0+ drops GLPI 10.x support to provide the best experience for GLPI 11 users
 - Follows GLPI 11 best practices and modern plugin architecture
 - Cleaner, more maintainable code
 - Easier to update for future GLPI 11.x versions
@@ -160,7 +160,8 @@ Contributions for additional languages are welcome!
 
 | Version | GLPI 10.x | GLPI 11.x | Status | Notes |
 |---------|-----------|-----------|--------|-------|
-| 2.0.0   | ❌ No     | ✅ Yes    | **Current - Recommended** | GLPI 11 native, breaking change |
+| 2.1.0   | ❌ No     | ✅ Yes    | **Current - Recommended** | GLPI 11 native, breaking change |
+| 2.0.0   | ❌ No     | ✅ Yes    | Deprecated | GLPI 11 native, breaking change |
 | 1.3.4   | ✅ Yes    | ⚠️ Partial | Maintenance | For GLPI 10.x users |
 | 1.3.3   | ✅ Yes    | ⚠️ Partial | Deprecated | CSRF fix |
 | 1.3.2   | ⚠️ Partial | ✅ Yes    | Deprecated | CSRF error in GLPI 10 |

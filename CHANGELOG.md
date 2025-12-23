@@ -1,5 +1,14 @@
 # Changelog - Kanban Looks Good
 
+## Version 2.1.0 - GLPI 11 Native (2025-01-XX)
+
+### 🔧 Changes
+- Version bump for marketplace release
+- Improved release packaging script
+- Updated documentation
+
+---
+
 ## Version 2.0.0 - GLPI 11 Native (2025-12-12)
 
 ### ⚠️ BREAKING CHANGES
