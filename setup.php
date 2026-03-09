@@ -102,6 +102,9 @@ function plugin_init_kanbanlooksgood()
     // Register frontend CSS files (GLPI 11 serves from public/)
     $PLUGIN_HOOKS[Hooks::ADD_CSS]['kanbanlooksgood'][] = 'css/kanban.css';
 
+    // Register frontend JS files (GLPI 11 serves from public/)
+    $PLUGIN_HOOKS[Hooks::ADD_JAVASCRIPT]['kanbanlooksgood'][] = 'js/kanban-filter.js';
+
     // Register configuration page
     $PLUGIN_HOOKS['config_page']['kanbanlooksgood'] = 'front/config.form.php';
 }
@@ -124,11 +127,11 @@ function plugin_init_kanbanlooksgood()
 function plugin_version_kanbanlooksgood()
 {
     return [
-        'name'         => 'Kanban Looks Good',
-        'version'      => PLUGIN_KANBANLOOKSGOOD_VERSION,
-        'author'       => '<a href="mailto:juancarlos.ap.dev@gmail.com">Juan Carlos Acosta Perabá</a>',
-        'license'      => 'GPLv3+',
-        'homepage'     => 'https://github.com/juancarlosacostaperaba/kanbanlooksgood',
+        'name' => 'Kanban Looks Good',
+        'version' => PLUGIN_KANBANLOOKSGOOD_VERSION,
+        'author' => '<a href="mailto:juancarlos.ap.dev@gmail.com">Juan Carlos Acosta Perabá</a>',
+        'license' => 'GPLv3+',
+        'homepage' => 'https://github.com/juancarlosacostaperaba/kanbanlooksgood',
         'requirements' => [
             'glpi' => [
                 'min' => PLUGIN_KANBANLOOKSGOOD_MIN_GLPI,
