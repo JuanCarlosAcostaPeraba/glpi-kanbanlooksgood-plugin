@@ -58,6 +58,20 @@
     font-size: 14px;
 }
 
+/* Price section */
+.kanbanlooksgood-price {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #2c7be5;
+    font-weight: 600;
+    font-size: 11px;
+}
+
+.kanbanlooksgood-price i {
+    font-size: 14px;
+}
+
 /* Dark theme adjustments */
 [data-theme="dark"] .kanbanlooksgood-metadata,
 .dark .kanbanlooksgood-metadata {
@@ -67,6 +81,11 @@
 [data-theme="dark"] .kanbanlooksgood-duration,
 .dark .kanbanlooksgood-duration {
     color: #aaa;
+}
+
+[data-theme="dark"] .kanbanlooksgood-price,
+.dark .kanbanlooksgood-price {
+    color: #4e97fd;
 }
 
 /* Ensure the metadata appears at the top of card content */

@@ -70,6 +70,7 @@ class PluginKanbanlooksgoodConfig extends CommonDBTM
         $config = [
             'show_priority' => 1,
             'show_duration' => 1,
+            'show_price' => 1,
             'work_hours_per_day' => 7
         ];
 
@@ -80,9 +81,10 @@ class PluginKanbanlooksgoodConfig extends CommonDBTM
 
         if (count($iterator) > 0) {
             $data = $iterator->current();
-            $config['show_priority'] = (int)$data['show_priority'];
-            $config['show_duration'] = (int)$data['show_duration'];
-            $config['work_hours_per_day'] = (int)$data['work_hours_per_day'];
+            $config['show_priority'] = (int) $data['show_priority'];
+            $config['show_duration'] = (int) $data['show_duration'];
+            $config['show_price'] = (int) $data['show_price'];
+            $config['work_hours_per_day'] = (int) $data['work_hours_per_day'];
         }
 
         return $config;
@@ -110,15 +112,19 @@ class PluginKanbanlooksgoodConfig extends CommonDBTM
         try {
             // Sanitize and validate input values
             // Values come from Dropdown::showYesNo(), which sends "1" or "0"
-            $show_priority = isset($input['show_priority']) ? (int)$input['show_priority'] : 0;
-            $show_duration = isset($input['show_duration']) ? (int)$input['show_duration'] : 0;
-            $work_hours_per_day = isset($input['work_hours_per_day']) ? (int)$input['work_hours_per_day'] : 7;
+            $show_priority = isset($input['show_priority']) ? (int) $input['show_priority'] : 0;
+            $show_duration = isset($input['show_duration']) ? (int) $input['show_duration'] : 0;
+            $show_price = isset($input['show_price']) ? (int) $input['show_price'] : 0;
+            $work_hours_per_day = isset($input['work_hours_per_day']) ? (int) $input['work_hours_per_day'] : 7;
 
             // Validate show_priority (must be 0 or 1)
             $show_priority = ($show_priority === 1) ? 1 : 0;
 
             // Validate show_duration (must be 0 or 1)
             $show_duration = ($show_duration === 1) ? 1 : 0;
+
+            // Validate show_price (must be 0 or 1)
+            $show_price = ($show_price === 1) ? 1 : 0;
 
             // Validate work hours per day (must be between 1 and 24)
             if ($work_hours_per_day < 1 || $work_hours_per_day > 24) {
@@ -129,6 +135,7 @@ class PluginKanbanlooksgoodConfig extends CommonDBTM
             $data = [
                 'show_priority' => $show_priority,
                 'show_duration' => $show_duration,
+                'show_price' => $show_price,
                 'work_hours_per_day' => $work_hours_per_day
             ];
 
@@ -231,6 +238,19 @@ class PluginKanbanlooksgoodConfig extends CommonDBTM
         echo "</td>";
         echo "<td style='padding: 12px;'>";
         Dropdown::showYesNo('show_duration', $config['show_duration']);
+        echo "</td>";
+        echo "</tr>";
+
+        // Show project price option
+        echo "<tr class='tab_bg_1'>";
+        echo "<td style='padding: 12px;'>";
+        echo "<strong>" . __('Show Project Price', 'kanbanlooksgood') . "</strong>";
+        echo "<br><small style='color: #666;'>";
+        echo __('Display the project price (budget) on Kanban cards if defined', 'kanbanlooksgood');
+        echo "</small>";
+        echo "</td>";
+        echo "<td style='padding: 12px;'>";
+        Dropdown::showYesNo('show_price', $config['show_price']);
         echo "</td>";
         echo "</tr>";
 

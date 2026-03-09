@@ -1,21 +1,22 @@
 # Kanban Looks Good
 
-[![Version](https://img.shields.io/badge/Version-2.1.0-green.svg)](https://github.com/JuanCarlosAcostaPeraba/glpi-kanbanlooksgood-plugin/releases)
+[![Version](https://img.shields.io/badge/Version-2.2.0-green.svg)](https://github.com/JuanCarlosAcostaPeraba/glpi-kanbanlooksgood-plugin/releases)
 [![GLPI Marketplace](https://img.shields.io/badge/GLPI_Marketplace-Available-orange.svg)](https://plugins.glpi-project.org/#/plugin/kanbanlooksgood)
 [![GLPI](https://img.shields.io/badge/GLPI-11.0.x-blue.svg)](https://glpi-project.org)
 [![License: GPLv3+](https://img.shields.io/badge/License-GPLv3+-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.html)
 [![Maintained](https://img.shields.io/badge/Maintained-yes-success.svg)]()
 
-A lightweight and non-intrusive GLPI plugin that enhances the **Project Kanban** by displaying **Priority** and **Planned Duration** directly on each card — without modifying any GLPI core files.
+A lightweight and non-intrusive GLPI plugin that enhances the **Project Kanban** by displaying **Priority**, **Planned Duration** and **Budget** directly on each card — without modifying any GLPI core files.
 
-> **🚀 v2.1.0 - GLPI 11 Native!**  
-> This version is built specifically for GLPI 11.0.x using modern GLPI practices.  
-> **Breaking change**: No longer supports GLPI 10.x. For GLPI 10.x, use version 1.3.x.
+> **🚀 v2.2.0 - Project Price Feature!**  
+> This version adds the ability to display the project's budget directly on the Kanban card.  
+> **GLPI 11 Native**: Built specifically for GLPI 11.0.x.
 
 ## ✨ Features
 
 - 🔹 Displays GLPI's native **priority badge** on Project and ProjectTask cards
 - 🔹 Shows **planned duration** using GLPI's own formatting
+- 🔹 Displays **project budget** directly on the card
 - 🔹 Adds a clean metadata bar below each card header
 - 🔹 Applies softened background color according to priority
 - 🔹 Works for both Projects and ProjectTasks
@@ -31,7 +32,7 @@ A lightweight and non-intrusive GLPI plugin that enhances the **Project Kanban**
 
 **Version 2.0.0+ is built exclusively for GLPI 11.0.x**
 
-- ✅ **GLPI 11.0.x users**: Use version 2.1.0+
+- ✅ **GLPI 11.0.x users**: Use version 2.2.0+
 - ⚠️ **GLPI 10.x users**: Use version [1.3.4](https://github.com/JuanCarlosAcostaPeraba/glpi-kanbanlooksgood-plugin/releases/tag/v1.3.4)
 
 This version includes:
@@ -70,7 +71,7 @@ Access the plugin settings via **GLPI → Configuration → Plugins → Kanban L
 Available options:
 
 - **Show Priority Badge**: Enable/disable priority badge display on cards
-- **Show Planned Duration**: Enable/disable planned duration display
+- **Show Project Price**: Enable/disable project budget display
 - **Work Hours per Day**: Configure hours per work day for duration calculations (1-24 hours, default: 7)
 
 ## 🧩 How it works
@@ -126,27 +127,17 @@ kanbanlooksgood/
 - **`PRE_KANBAN_CONTENT`** (GLPI 11 native)
   Injects priority, planned duration, and HTML content directly into Kanban cards during server-side rendering. All styling and metadata is generated in PHP, ensuring compatibility with GLPI 11's Vue.js-based Kanban.
 
-## 🆕 What's New in v2.1.0
-
-**⚠️ BREAKING CHANGE - GLPI 11 Only:**
-- 🚀 Complete rewrite for GLPI 11.0.x
-- ✅ Uses GLPI 11 native `Hooks` namespace
-- ✅ Assets served from `public/` directory (GLPI 11 standard)
-- ✅ Cleaner codebase without GLPI 10 compatibility layers
-- ✅ Uses `doQuery()` and modern GLPI 11 database methods
-- ✅ Simplified installation and upgrade process
-- ✅ Better integration with GLPI 11 architecture
-
-**Why v2.1.0?**
-- Version 2.0.0+ drops GLPI 10.x support to provide the best experience for GLPI 11 users
-- Version 2.1.0 includes improvements and updated documentation
-- Follows GLPI 11 best practices and modern plugin architecture
-- Cleaner, more maintainable code
-- Easier to update for future GLPI 11.x versions
-
 **For GLPI 10.x users:**
 - Continue using version [1.3.4](https://github.com/JuanCarlosAcostaPeraba/glpi-kanbanlooksgood-plugin/releases/tag/v1.3.4)
 - Version 1.3.x will remain available but won't receive new features
+
+---
+
+## 🆕 What's New in v2.2.0
+
+- ✨ **Project Price Display**: You can now see the project's budget directly on the card.
+- ⚙️ **Configurable**: Enable or disable the price display in the plugin settings.
+- 🌐 **Translations**: Full support for English, Spanish, and French.
 
 See [CHANGELOG.md](CHANGELOG.md) for detailed technical changes.
 
@@ -162,7 +153,8 @@ Contributions for additional languages are welcome!
 
 | Version | GLPI 10.x | GLPI 11.x | Status | Notes |
 |---------|-----------|-----------|--------|-------|
-| 2.1.0   | ❌ No     | ✅ Yes    | **Current - Recommended** | GLPI 11 native, breaking change |
+| 2.2.0   | ❌ No     | ✅ Yes    | **Current - Recommended** | Project Price feature |
+| 2.1.0   | ❌ No     | ✅ Yes    | Deprecated | GLPI 11 native improvements |
 | 2.0.0   | ❌ No     | ✅ Yes    | Deprecated | GLPI 11 native, breaking change |
 | 1.3.4   | ✅ Yes    | ⚠️ Partial | Maintenance | For GLPI 10.x users |
 | 1.3.3   | ✅ Yes    | ⚠️ Partial | Deprecated | CSRF fix |

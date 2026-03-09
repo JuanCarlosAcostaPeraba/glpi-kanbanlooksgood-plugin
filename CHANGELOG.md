@@ -1,5 +1,18 @@
 # Changelog - Kanban Looks Good
 
+## Version 2.2.0 - Project Price Feature (2026-03-09)
+
+### ✨ New Features
+- **Project Price Display**: Added option to show the project's budget directly on Kanban cards.
+- **Configurable**: New setting in the plugin configuration to toggle price visibility.
+- **Multi-language**: Added translations for price-related labels in English, Spanish, and French.
+
+### 🔧 Changes
+- Updated database schema to support the new configuration field.
+- Improved metadata rendering logic with better icon integration.
+
+---
+
 ## Version 2.1.0 - GLPI 11 Native (2025-01-XX)
 
 ### 🔧 Changes

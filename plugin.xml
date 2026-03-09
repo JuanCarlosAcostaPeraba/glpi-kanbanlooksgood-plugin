@@ -10,9 +10,9 @@
 
 	<description>
 		<short>
-			<en>Enhances the GLPI Project Kanban by displaying Priority and Planned Duration on cards.</en>
-			<es_ES>Mejora el Kanban de Proyectos de GLPI mostrando Prioridad y Duración Planificada.</es_ES>
-			<fr_FR>Améliore le Kanban de projet GLPI en affichant la priorité et la durée planifiée sur les cartes.</fr_FR>
+			<en>Enhances the GLPI Project Kanban by displaying Priority, Planned Duration and Budget on cards.</en>
+			<es_ES>Mejora el Kanban de Proyectos de GLPI mostrando Prioridad, Duración Planificada y Presupuesto.</es_ES>
+			<fr_FR>Améliore le Kanban de projet GLPI en affichant la priorité, la durée planifiée et le budget sur les cartes.</fr_FR>
 		</short>
 		<long>
 			<en><![CDATA[
@@ -22,12 +22,13 @@ It automatically adds:
 
 - **Priority badge** (same format and colors used by GLPI core)
 - **Planned Duration** for Projects and Project Tasks
+- **Project Price (Budget)** directly on project cards
 - **Soft background shading** based on project priority
 - **Configurable settings** to customize display preferences
 - **Non-intrusive UI improvements** without modifying GLPI core
 
 **Features:**
-- Toggle priority and duration display independently
+- Toggle priority, duration and price display independently
 - Configurable work hours per day (1-24 hours)
 - Multi-language support (English, Spanish, French)
 - Dark theme compatible
@@ -45,12 +46,13 @@ Añade automáticamente:
 
 - **Badge de prioridad** (mismo formato y colores del core de GLPI)
 - **Duración planificada** para Proyectos y Tareas
+- **Precio del proyecto (Presupuesto)** directamente en las tarjetas
 - **Sombreado de fondo** suavizado según la prioridad
 - **Configuración personalizable** para ajustar las preferencias de visualización
 - Mejoras **no intrusivas**, sin modificar el core de GLPI
 
 **Características:**
-- Activar/desactivar prioridad y duración de forma independiente
+- Activar/desactivar prioridad, duración y precio de forma independiente
 - Horas de trabajo por día configurables (1-24 horas)
 - Soporte multiidioma (Inglés, Español, Francés)
 - Compatible con tema oscuro
@@ -68,12 +70,13 @@ Il ajoute automatiquement :
 
 - **Badge de priorité** (même format et couleurs que le cœur de GLPI)
 - **Durée planifiée** pour les projets et les tâches de projet
+- **Prix du projet (Budget)** directement sur les cartes de projet
 - **Ombrage d'arrière-plan doux** basé sur la priorité du projet
 - **Paramètres configurables** pour personnaliser les préférences d'affichage
 - **Améliorations UI non intrusives** sans modifier le cœur de GLPI
 
 **Fonctionnalités :**
-- Activer/désactiver l'affichage de la priorité et de la durée indépendamment
+- Activer/désactiver l'affichage de la priorité, de la durée et du prix indépendamment
 - Heures de travail par jour configurables (1-24 heures)
 - Support multilingue (Anglais, Espagnol, Français)
 - Compatible thème sombre
@@ -94,9 +97,15 @@ Développé pour une utilisation réelle à l'**Hospital Universitario de Canari
 
 	<authors>
 		<author>Juan Carlos Acosta Perabá</author>
+		<author>Alejandro Lorenzo de la Rosa</author>
 	</authors>
 
 	<versions>
+		<version>
+			<num>2.2.0</num>
+			<compatibility>~11.0.0</compatibility>
+			<download_url>https://github.com/JuanCarlosAcostaPeraba/glpi-kanbanlooksgood-plugin/releases/download/v2.2.0/kanbanlooksgood-2.2.0.zip</download_url>
+		</version>
 		<version>
 			<num>2.1.0</num>
 			<compatibility>~11.0.0</compatibility>
@@ -183,6 +192,8 @@ Développé pour une utilisation réelle à l'**Hospital Universitario de Canari
 			<tag>projects</tag>
 			<tag>priority</tag>
 			<tag>duration</tag>
+			<tag>price</tag>
+			<tag>budget</tag>
 			<tag>ui-enhancement</tag>
 			<tag>configuration</tag>
 		</en>

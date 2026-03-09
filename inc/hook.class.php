@@ -196,8 +196,8 @@ class PluginKanbanlooksgoodHook
         // Load plugin configuration
         $config = PluginKanbanlooksgoodConfig::getConfig();
 
-        // If both features are disabled, return empty
-        if (!$config['show_priority'] && !$config['show_duration']) {
+        // If all features are disabled, return empty
+        if (!$config['show_priority'] && !$config['show_duration'] && !$config['show_price']) {
             return ['content' => ''];
         }
 
@@ -217,7 +217,7 @@ class PluginKanbanlooksgoodHook
 
         // Get priority information (Projects only)
         if ($config['show_priority'] && $itemtype === 'Project') {
-            $priority_value = isset($item->fields['priority']) ? (int)$item->fields['priority'] : 0;
+            $priority_value = isset($item->fields['priority']) ? (int) $item->fields['priority'] : 0;
 
             if ($priority_value > 0) {
                 $priority_color = self::getPriorityColor($priority_value);
@@ -249,7 +249,7 @@ class PluginKanbanlooksgoodHook
                 $planned_duration = ProjectTask::getTotalPlannedDurationForProject($items_id);
             } elseif ($itemtype === 'ProjectTask') {
                 $planned_duration = isset($item->fields['planned_duration'])
-                    ? (int)$item->fields['planned_duration']
+                    ? (int) $item->fields['planned_duration']
                     : 0;
             }
 
@@ -266,6 +266,24 @@ class PluginKanbanlooksgoodHook
                     $html .= htmlspecialchars($duration_human, ENT_QUOTES, 'UTF-8');
                     $html .= "</div>";
                 }
+            }
+        }
+
+        // Get project price (budget)
+        if ($config['show_price'] && $itemtype === 'Project') {
+            $budget = isset($item->fields['budget']) ? (float) $item->fields['budget'] : 0;
+
+            if ($budget > 0) {
+                $budget_formatted = Html::formatNumber($budget, true);
+
+                if (!str_contains($html, 'kanbanlooksgood-metadata')) {
+                    $html .= "<div class='kanbanlooksgood-metadata'>";
+                }
+
+                $html .= "<div class='kanbanlooksgood-price'>";
+                $html .= "<i class='ti ti-currency-dollar'></i>&nbsp;";
+                $html .= htmlspecialchars($budget_formatted, ENT_QUOTES, 'UTF-8');
+                $html .= "</div>";
             }
         }
 

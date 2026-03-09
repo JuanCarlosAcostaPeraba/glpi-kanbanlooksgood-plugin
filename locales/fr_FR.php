@@ -19,6 +19,8 @@ $LANG['plugin_kanbanlooksgood'] = [
     'Configure how priority and duration information is displayed on Project Kanban cards' => 'Configurer comment les informations de priorité et de durée sont affichées sur les cartes du Kanban de projet',
     'Display the priority badge on Kanban cards using GLPI native colors' => 'Afficher le badge de priorité sur les cartes Kanban en utilisant les couleurs natives de GLPI',
     'Display the planned duration on Kanban cards in a human-readable format' => 'Afficher la durée planifiée sur les cartes Kanban dans un format lisible',
+    'Show Project Price' => 'Afficher le prix du projet',
+    'Display the project price (budget) on Kanban cards if defined' => 'Afficher le prix du projet (budget) sur les cartes Kanban s\'il est défini',
     'Number of work hours per day for duration calculations (1-24)' => 'Nombre d\'heures de travail par jour pour les calculs de durée (1-24)'
 ];
 

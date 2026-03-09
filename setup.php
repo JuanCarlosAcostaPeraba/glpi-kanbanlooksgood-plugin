@@ -41,7 +41,7 @@ define('PLUGIN_KANBANLOOKSGOOD_SETUP_LOADED', true);
 /**
  * Plugin version
  */
-define('PLUGIN_KANBANLOOKSGOOD_VERSION', '2.1.0');
+define('PLUGIN_KANBANLOOKSGOOD_VERSION', '2.2.0');
 
 /**
  * Minimum GLPI version required (inclusive)
@@ -163,6 +163,7 @@ function plugin_kanbanlooksgood_check_and_upgrade()
                 `id` int NOT NULL AUTO_INCREMENT,
                 `show_priority` tinyint NOT NULL DEFAULT '1',
                 `show_duration` tinyint NOT NULL DEFAULT '1',
+                `show_price` tinyint NOT NULL DEFAULT '1',
                 `work_hours_per_day` int NOT NULL DEFAULT '7',
                 PRIMARY KEY (`id`)
             ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
@@ -175,6 +176,7 @@ function plugin_kanbanlooksgood_check_and_upgrade()
                 [
                     'show_priority' => 1,
                     'show_duration' => 1,
+                    'show_price' => 1,
                     'work_hours_per_day' => 7
                 ]
             );
@@ -252,6 +254,7 @@ function plugin_kanbanlooksgood_install()
             `id` int NOT NULL AUTO_INCREMENT,
             `show_priority` tinyint NOT NULL DEFAULT '1',
             `show_duration` tinyint NOT NULL DEFAULT '1',
+            `show_price` tinyint NOT NULL DEFAULT '1',
             `work_hours_per_day` int NOT NULL DEFAULT '7',
             PRIMARY KEY (`id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
@@ -270,6 +273,7 @@ function plugin_kanbanlooksgood_install()
                 [
                     'show_priority' => 1,
                     'show_duration' => 1,
+                    'show_price' => 1,
                     'work_hours_per_day' => 7
                 ]
             ) or die("Error inserting default config: " . $DB->error());
