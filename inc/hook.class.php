@@ -215,9 +215,17 @@ class PluginKanbanlooksgoodHook
         $html = '';
         $priority_color = '';
 
-        // Get priority information (Projects only)
-        if ($config['show_priority'] && $itemtype === 'Project') {
+        // Get priority information
+        if ($config['show_priority']) {
             $priority_value = isset($item->fields['priority']) ? (int) $item->fields['priority'] : 0;
+
+            // If it's a task and has no priority, try to get it from the parent project
+            if ($priority_value <= 0 && $itemtype === 'ProjectTask' && isset($item->fields['projects_id'])) {
+                $project = new Project();
+                if ($project->getFromDB($item->fields['projects_id'])) {
+                    $priority_value = (int) ($project->fields['priority'] ?? 0);
+                }
+            }
 
             if ($priority_value > 0) {
                 $priority_color = self::getPriorityColor($priority_value);
@@ -269,19 +277,24 @@ class PluginKanbanlooksgoodHook
             }
         }
 
-        // Get project price (budget)
-        if ($config['show_price'] && $itemtype === 'Project') {
-            $budget = isset($item->fields['budget']) ? (float) $item->fields['budget'] : 0;
+        // Get project price (cost)
+        if ($config['show_price']) {
+            $projects_id = ($itemtype === 'Project') ? $items_id : ($item->fields['projects_id'] ?? 0);
+            $total_cost = 0;
 
-            if ($budget > 0) {
-                $budget_formatted = Html::formatNumber($budget, true);
+            if ($projects_id > 0) {
+                $total_cost = self::getTotalProjectCost($projects_id);
+            }
+
+            if ($total_cost > 0) {
+                $budget_formatted = Html::formatNumber($total_cost, true);
 
                 if (!str_contains($html, 'kanbanlooksgood-metadata')) {
                     $html .= "<div class='kanbanlooksgood-metadata'>";
                 }
 
                 $html .= "<div class='kanbanlooksgood-price'>";
-                $html .= "<i class='ti ti-currency-dollar'></i>&nbsp;";
+                $html .= "<i class='ti ti-currency-euro'></i>";
                 $html .= htmlspecialchars($budget_formatted, ENT_QUOTES, 'UTF-8');
                 $html .= "</div>";
             }
@@ -293,5 +306,30 @@ class PluginKanbanlooksgoodHook
         }
 
         return ['content' => $html];
+    }
+
+    /**
+     * Get the total cost of a project from glpi_projectcosts table
+     *
+     * @param int $projects_id Project ID
+     * @return float Total cost
+     */
+    private static function getTotalProjectCost($projects_id)
+    {
+        global $DB;
+        $total = 0;
+
+        $iterator = $DB->request([
+            'SELECT' => ['SUM' => 'cost AS total_cost'],
+            'FROM' => 'glpi_projectcosts',
+            'WHERE' => ['projects_id' => $projects_id]
+        ]);
+
+        if (count($iterator) > 0) {
+            $data = $iterator->current();
+            $total = (float) ($data['total_cost'] ?? 0);
+        }
+
+        return $total;
     }
 }

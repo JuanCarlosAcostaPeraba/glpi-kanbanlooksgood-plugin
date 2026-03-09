@@ -156,8 +156,16 @@ function plugin_kanbanlooksgood_check_and_upgrade()
 {
     global $DB;
 
-    // Check if configuration table exists (GLPI 11)
-    if (!$DB->tableExists('glpi_plugin_kanbanlooksgood_configs')) {
+    // Check and upgrade database structure if needed
+    if ($DB->tableExists('glpi_plugin_kanbanlooksgood_configs')) {
+        // Add show_price if it doesn't exist (Upgrade to 2.2.0)
+        if (!$DB->fieldExists('glpi_plugin_kanbanlooksgood_configs', 'show_price')) {
+            $query = "ALTER TABLE `glpi_plugin_kanbanlooksgood_configs` 
+                     ADD `show_price` tinyint NOT NULL DEFAULT '1' AFTER `show_duration`;";
+            $DB->doQuery($query);
+        }
+    } else {
+        // Create table if not exists (GLPI 11 clean install)
         try {
             $query = "CREATE TABLE IF NOT EXISTS `glpi_plugin_kanbanlooksgood_configs` (
                 `id` int NOT NULL AUTO_INCREMENT,

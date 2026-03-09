@@ -81,10 +81,10 @@ class PluginKanbanlooksgoodConfig extends CommonDBTM
 
         if (count($iterator) > 0) {
             $data = $iterator->current();
-            $config['show_priority'] = (int) $data['show_priority'];
-            $config['show_duration'] = (int) $data['show_duration'];
-            $config['show_price'] = (int) $data['show_price'];
-            $config['work_hours_per_day'] = (int) $data['work_hours_per_day'];
+            $config['show_priority'] = (int) ($data['show_priority'] ?? 1);
+            $config['show_duration'] = (int) ($data['show_duration'] ?? 1);
+            $config['show_price'] = (int) ($data['show_price'] ?? 1);
+            $config['work_hours_per_day'] = (int) ($data['work_hours_per_day'] ?? 7);
         }
 
         return $config;
