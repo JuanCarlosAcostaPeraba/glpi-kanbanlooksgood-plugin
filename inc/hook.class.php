@@ -287,7 +287,14 @@ class PluginKanbanlooksgoodHook
             }
 
             if ($total_cost > 0) {
-                $budget_formatted = Html::formatNumber($total_cost, true);
+                // Force Spanish/European format: comma for decimals, dot for thousands
+                $formatter = new \NumberFormatter('es_ES', \NumberFormatter::DECIMAL);
+                $budget_formatted = $formatter->format($total_cost);
+                
+                // Fallback if NumberFormatter is not available
+                if ($budget_formatted === false) {
+                    $budget_formatted = number_format($total_cost, 2, ',', '.');
+                }
 
                 if (!str_contains($html, 'kanbanlooksgood-metadata')) {
                     $html .= "<div class='kanbanlooksgood-metadata'>";
