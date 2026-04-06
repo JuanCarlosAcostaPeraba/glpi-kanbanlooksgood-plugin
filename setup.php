@@ -211,7 +211,10 @@ function plugin_kanbanlooksgood_install()
             PRIMARY KEY (`id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
 
-        $DB->doQuery($query) or die("Error creating table: " . $DB->error());
+        if ($DB->doQuery($query) === false) {
+            Toolbox::logError("KanbanLooksGood install: Error creating table - " . $DB->error());
+            return false;
+        }
 
         // Upgrade path: add show_price column if upgrading from < 2.2.0
         if (
@@ -231,7 +234,7 @@ function plugin_kanbanlooksgood_install()
         ]);
 
         if (count($iterator) === 0) {
-            $DB->insert(
+            $result = $DB->insert(
                 'glpi_plugin_kanbanlooksgood_configs',
                 [
                     'show_priority' => 1,
@@ -239,12 +242,17 @@ function plugin_kanbanlooksgood_install()
                     'show_price' => 1,
                     'work_hours_per_day' => 7
                 ]
-            ) or die("Error inserting default config: " . $DB->error());
+            );
+            if ($result === false) {
+                Toolbox::logError("KanbanLooksGood install: Error inserting default config - " . $DB->error());
+                return false;
+            }
         }
 
         return true;
     } catch (\Exception $e) {
-        die("Installation failed: " . $e->getMessage());
+        Toolbox::logError("KanbanLooksGood install failed: " . $e->getMessage());
+        return false;
     }
 }
 
