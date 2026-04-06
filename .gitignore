@@ -48,7 +48,6 @@ yarn.lock
 # Coverage and testing
 /coverage/
 .phpunit.result.cache
-phpunit.xml
 
 # Environment files
 .env

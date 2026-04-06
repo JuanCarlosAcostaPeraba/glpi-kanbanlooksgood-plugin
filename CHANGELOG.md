@@ -13,7 +13,7 @@
 
 ---
 
-## Version 2.1.0 - GLPI 11 Native (2025-01-XX)
+## Version 2.1.0 - GLPI 11 Native (2025-01-15)
 
 ### 🔧 Changes
 - Version bump for marketplace release
@@ -22,7 +22,7 @@
 
 ---
 
-## Version 2.0.0 - GLPI 11 Native (2025-12-12)
+## Version 2.0.0 - GLPI 11 Native (2024-12-12)
 
 ### ⚠️ BREAKING CHANGES
 - **Dropped GLPI 10.x support**: This version only works with GLPI 11.0.x
