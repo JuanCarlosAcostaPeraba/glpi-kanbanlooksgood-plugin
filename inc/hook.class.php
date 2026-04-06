@@ -213,7 +213,7 @@ class PluginKanbanlooksgoodHook
         }
 
         $html = '';
-        $priority_color = '';
+        $parts = [];
 
         // Get priority information
         if ($config['show_priority']) {
@@ -238,13 +238,13 @@ class PluginKanbanlooksgoodHook
                     $html .= "<style>.kanban-item#{$itemtype}-{$items_id} .kanban-item-header { background-color: {$priority_color} !important; }</style>";
 
                     // Add priority badge
-                    $html .= "<div class='kanbanlooksgood-metadata'>";
-                    $html .= "<div class='kanbanlooksgood-priority'>";
-                    $html .= "<div class='priority_block' style='border-color: " . htmlspecialchars($priority_color, ENT_QUOTES, 'UTF-8') . "'>";
-                    $html .= "<span style='background: " . htmlspecialchars($priority_color, ENT_QUOTES, 'UTF-8') . "'></span>&nbsp;";
-                    $html .= htmlspecialchars($priority_name, ENT_QUOTES, 'UTF-8');
-                    $html .= "</div>";
-                    $html .= "</div>";
+                    $part = "<div class='kanbanlooksgood-priority'>";
+                    $part .= "<div class='priority_block' style='border-color: " . htmlspecialchars($priority_color, ENT_QUOTES, 'UTF-8') . "'>";
+                    $part .= "<span style='background: " . htmlspecialchars($priority_color, ENT_QUOTES, 'UTF-8') . "'></span>&nbsp;";
+                    $part .= htmlspecialchars($priority_name, ENT_QUOTES, 'UTF-8');
+                    $part .= "</div>";
+                    $part .= "</div>";
+                    $parts[] = $part;
                 }
             }
         }
@@ -265,14 +265,11 @@ class PluginKanbanlooksgoodHook
                 $duration_human = self::formatPlannedDuration($planned_duration);
 
                 if ($duration_human) {
-                    if (!str_contains($html, 'kanbanlooksgood-metadata')) {
-                        $html .= "<div class='kanbanlooksgood-metadata'>";
-                    }
-
-                    $html .= "<div class='kanbanlooksgood-duration'>";
-                    $html .= "<i class='ti ti-clock'></i>&nbsp;";
-                    $html .= htmlspecialchars($duration_human, ENT_QUOTES, 'UTF-8');
-                    $html .= "</div>";
+                    $part = "<div class='kanbanlooksgood-duration'>";
+                    $part .= "<i class='ti ti-clock'></i>&nbsp;";
+                    $part .= htmlspecialchars($duration_human, ENT_QUOTES, 'UTF-8');
+                    $part .= "</div>";
+                    $parts[] = $part;
                 }
             }
         }
@@ -290,26 +287,25 @@ class PluginKanbanlooksgoodHook
                 // Force Spanish/European format: comma for decimals, dot for thousands
                 $formatter = new \NumberFormatter('es_ES', \NumberFormatter::DECIMAL);
                 $budget_formatted = $formatter->format($total_cost);
-                
+
                 // Fallback if NumberFormatter is not available
                 if ($budget_formatted === false) {
                     $budget_formatted = number_format($total_cost, 2, ',', '.');
                 }
 
-                if (!str_contains($html, 'kanbanlooksgood-metadata')) {
-                    $html .= "<div class='kanbanlooksgood-metadata'>";
-                }
-
-                $html .= "<div class='kanbanlooksgood-price'>";
-                $html .= "<i class='ti ti-currency-euro'></i>";
-                $html .= htmlspecialchars($budget_formatted, ENT_QUOTES, 'UTF-8');
-                $html .= "</div>";
+                $part = "<div class='kanbanlooksgood-price'>";
+                $part .= "<i class='ti ti-currency-euro'></i>";
+                $part .= htmlspecialchars($budget_formatted, ENT_QUOTES, 'UTF-8');
+                $part .= "</div>";
+                $parts[] = $part;
             }
         }
 
-        // Close metadata div if opened
-        if (str_contains($html, 'kanbanlooksgood-metadata') && !str_contains($html, '</div></div>')) {
-            $html .= "</div>"; // Close kanbanlooksgood-metadata
+        // Wrap metadata parts deterministically
+        if (!empty($parts)) {
+            $html .= "<div class='kanbanlooksgood-metadata'>";
+            $html .= implode('', $parts);
+            $html .= "</div>";
         }
 
         return ['content' => $html];
