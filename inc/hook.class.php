@@ -104,7 +104,7 @@ class PluginKanbanlooksgoodHook
      *
      * @return string Formatted duration string or empty string if <= 0
      */
-    private static function formatPlannedDuration($seconds, $hoursPerDay = null)
+    public static function formatPlannedDuration($seconds, $hoursPerDay = null)
     {
         if ($seconds <= 0) {
             return '';
@@ -152,7 +152,7 @@ class PluginKanbanlooksgoodHook
      * @param float $amount Amount to lighten (0.0 to 1.0)
      * @return string RGB color string
      */
-    private static function lightenColor($color, $amount = 0.8)
+    public static function lightenColor($color, $amount = 0.8)
     {
         $color = ltrim($color, '#');
 
