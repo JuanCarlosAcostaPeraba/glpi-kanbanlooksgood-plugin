@@ -5,7 +5,6 @@
  * when no other filters are present.
  */
 (function () {
-    console.log('KanbanLooksGood: Script initialized (v3 - Vue Component Support)');
 
     const init = () => {
         // Detect GLPI 11 Kanban URLs
@@ -43,7 +42,7 @@
                 const existingTags = searchContainer.querySelectorAll('.search-input-tag');
 
                 if (existingTags.length === 0 && editableSpan.textContent.trim() === '') {
-                    console.log('KanbanLooksGood: Applying default "type:Project" filter to Vue component');
+                    // Apply default filter to Vue component
 
                     // To trigger the Vue filter, we need to:
                     // 1. Put the text in the editable span
@@ -76,7 +75,6 @@
                     filterApplied = true;
                     return true;
                 } else {
-                    console.log('KanbanLooksGood: Filter or text already present, skipping');
                     filterApplied = true;
                     return true;
                 }

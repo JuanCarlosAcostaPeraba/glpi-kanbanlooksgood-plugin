@@ -41,7 +41,7 @@ This version includes:
 - Uses `PRE_KANBAN_CONTENT` hook for direct HTML injection
 - Simplified codebase without legacy compatibility layers
 - Modern database methods (`query()`, `insert()`)
-- No JavaScript dependencies
+- Minimal JavaScript for automatic Kanban filtering
 
 ## 🚀 Installation
 
@@ -83,7 +83,7 @@ This plugin uses **server-side rendering** to inject metadata directly into Kanb
 1. **Hook**: Uses `PRE_KANBAN_CONTENT` hook (GLPI 11 native)
 2. **Rendering**: Generates HTML with inline styles on the server
 3. **Vue.js Compatible**: Works seamlessly with GLPI 11's Vue.js-based Kanban
-4. **No JavaScript**: All rendering is done in PHP - no client-side manipulation needed
+4. **Lightweight JS**: Minimal client-side script for automatic Kanban filtering
 
 ### Priority
 
@@ -110,8 +110,10 @@ kanbanlooksgood/
 ├── front/
 │   └── config.form.php        # Configuration form handler
 ├── public/
-│   └── css/
-│       └── kanban.css         # Styling for metadata section (GLPI 11 structure)
+│   ├── css/
+│   │   └── kanban.css         # Styling for metadata section (GLPI 11 structure)
+│   └── js/
+│       └── kanban-filter.js   # Automatic Kanban filtering script
 ├── locales/
 │   ├── en_GB.php              # English translations
 │   ├── es_ES.php              # Spanish translations
@@ -182,7 +184,7 @@ No significant performance impact. The plugin:
 - Uses GLPI 11's PRE_KANBAN_CONTENT hook for server-side rendering
 - Minimizes database queries
 - Loads only on Kanban pages
-- No client-side JavaScript processing required
+- Minimal client-side JavaScript (only for Kanban filtering)
 
 ### Can I use this with GLPI 9.x?
 
