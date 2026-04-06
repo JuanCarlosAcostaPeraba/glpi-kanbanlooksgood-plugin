@@ -89,9 +89,6 @@ function plugin_init_kanbanlooksgood()
         require_once __DIR__ . '/inc/hook.class.php';
     }
 
-    // Verify and upgrade database structure if needed
-    plugin_kanbanlooksgood_check_and_upgrade();
-
     // Register hooks for Kanban content injection
     // PRE_KANBAN_CONTENT: injects content at the beginning of the card
     $PLUGIN_HOOKS[Hooks::PRE_KANBAN_CONTENT]['kanbanlooksgood'] = [
@@ -139,59 +136,6 @@ function plugin_version_kanbanlooksgood()
             ]
         ]
     ];
-}
-
-/**
- * Check and upgrade database structure if needed
- *
- * This function is called on every page load when the plugin is active.
- * It ensures the configuration table exists and has the correct structure,
- * creating it with default values if necessary.
- *
- * @global DBmysql $DB GLPI database instance
- *
- * @return void
- */
-function plugin_kanbanlooksgood_check_and_upgrade()
-{
-    global $DB;
-
-    // Check and upgrade database structure if needed
-    if ($DB->tableExists('glpi_plugin_kanbanlooksgood_configs')) {
-        // Add show_price if it doesn't exist (Upgrade to 2.2.0)
-        if (!$DB->fieldExists('glpi_plugin_kanbanlooksgood_configs', 'show_price')) {
-            $query = "ALTER TABLE `glpi_plugin_kanbanlooksgood_configs` 
-                     ADD `show_price` tinyint NOT NULL DEFAULT '1' AFTER `show_duration`;";
-            $DB->doQuery($query);
-        }
-    } else {
-        // Create table if not exists (GLPI 11 clean install)
-        try {
-            $query = "CREATE TABLE IF NOT EXISTS `glpi_plugin_kanbanlooksgood_configs` (
-                `id` int NOT NULL AUTO_INCREMENT,
-                `show_priority` tinyint NOT NULL DEFAULT '1',
-                `show_duration` tinyint NOT NULL DEFAULT '1',
-                `show_price` tinyint NOT NULL DEFAULT '1',
-                `work_hours_per_day` int NOT NULL DEFAULT '7',
-                PRIMARY KEY (`id`)
-            ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
-
-            $DB->doQuery($query);
-
-            // Insert default configuration
-            $DB->insert(
-                'glpi_plugin_kanbanlooksgood_configs',
-                [
-                    'show_priority' => 1,
-                    'show_duration' => 1,
-                    'show_price' => 1,
-                    'work_hours_per_day' => 7
-                ]
-            );
-        } catch (\Exception $e) {
-            // Log but don't fail - allow plugin to continue
-        }
-    }
 }
 
 /**
@@ -268,6 +212,17 @@ function plugin_kanbanlooksgood_install()
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;";
 
         $DB->doQuery($query) or die("Error creating table: " . $DB->error());
+
+        // Upgrade path: add show_price column if upgrading from < 2.2.0
+        if (
+            $DB->tableExists('glpi_plugin_kanbanlooksgood_configs')
+            && !$DB->fieldExists('glpi_plugin_kanbanlooksgood_configs', 'show_price')
+        ) {
+            $DB->doQuery(
+                "ALTER TABLE `glpi_plugin_kanbanlooksgood_configs`
+                 ADD `show_price` tinyint NOT NULL DEFAULT '1' AFTER `show_duration`;"
+            );
+        }
 
         // Insert default configuration if none exists
         $iterator = $DB->request([
