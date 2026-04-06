@@ -1,5 +1,15 @@
 # Changelog - Kanban Looks Good
 
+## Version 2.3.0 - Maintenance & Robustness (2026-04-06)
+
+### 🔧 Changes
+- **Maintenance**: Repository cleanup, fixed versioning inconsistencies, and aligned documentation.
+- **Robustness**: Ensured deterministic HTML output for Kanban cards to avoid DOM errors in Vue.js.
+- **Error Handling**: Improved plugin installation to log errors properly through GLPI instead of stopping execution.
+- **Testing**: Integrated PHPUnit baseline test suite.
+
+---
+
 ## Version 2.2.0 - Project Price Feature (2026-03-09)
 
 ### ✨ New Features

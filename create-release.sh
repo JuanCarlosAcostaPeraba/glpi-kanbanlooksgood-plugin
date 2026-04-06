@@ -4,7 +4,7 @@
 # Para Linux/Mac/Git Bash
 # =========================================================================
 
-VERSION="2.2.0"
+VERSION="2.3.0"
 PLUGIN_NAME="kanbanlooksgood"
 ZIP_NAME="${PLUGIN_NAME}-${VERSION}.zip"
 

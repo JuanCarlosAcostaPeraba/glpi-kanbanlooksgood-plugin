@@ -1,6 +1,6 @@
 # Kanban Looks Good
 
-[![Version](https://img.shields.io/badge/Version-2.2.0-green.svg)](https://github.com/JuanCarlosAcostaPeraba/glpi-kanbanlooksgood-plugin/releases)
+[![Version](https://img.shields.io/badge/Version-2.3.0-green.svg)](https://github.com/JuanCarlosAcostaPeraba/glpi-kanbanlooksgood-plugin/releases)
 [![GLPI Marketplace](https://img.shields.io/badge/GLPI_Marketplace-Available-orange.svg)](https://plugins.glpi-project.org/#/plugin/kanbanlooksgood)
 [![GLPI](https://img.shields.io/badge/GLPI-11.0.x-blue.svg)](https://glpi-project.org)
 [![License: GPLv3+](https://img.shields.io/badge/License-GPLv3+-blue.svg)](https://www.gnu.org/licenses/gpl-3.0.html)
@@ -8,8 +8,8 @@
 
 A lightweight and non-intrusive GLPI plugin that enhances the **Project Kanban** by displaying **Priority**, **Planned Duration** and **Budget** directly on each card — without modifying any GLPI core files.
 
-> **🚀 v2.2.0 - Project Price Feature!**  
-> This version adds the ability to display the project's budget directly on the Kanban card.  
+> **🚀 v2.3.0 - Maintenance & Robustness!**  
+> This version improves installation error-handling, strict HTML semantics for Vue.js support, and brings a baseline test suite.  
 > **GLPI 11 Native**: Built specifically for GLPI 11.0.x.
 
 ## ✨ Features
@@ -32,7 +32,7 @@ A lightweight and non-intrusive GLPI plugin that enhances the **Project Kanban**
 
 **Version 2.0.0+ is built exclusively for GLPI 11.0.x**
 
-- ✅ **GLPI 11.0.x users**: Use version 2.2.0+
+- ✅ **GLPI 11.0.x users**: Use version 2.3.0+
 - ⚠️ **GLPI 10.x users**: Use version [1.3.4](https://github.com/JuanCarlosAcostaPeraba/glpi-kanbanlooksgood-plugin/releases/tag/v1.3.4)
 
 This version includes:
@@ -135,11 +135,12 @@ kanbanlooksgood/
 
 ---
 
-## 🆕 What's New in v2.2.0
+## 🆕 What's New in v2.3.0
 
-- ✨ **Project Price Display**: You can now see the project's budget directly on the card.
-- ⚙️ **Configurable**: Enable or disable the price display in the plugin settings.
-- 🌐 **Translations**: Full support for English, Spanish, and French.
+- 🛠️ **Robustness**: Ensured 100% deterministic HTML output for Kanban cards to avoid DOM reconciliation errors in Vue.js.
+- ⚙️ **Error Handling**: Improved plugin installation to log errors through standard GLPI tools instead of abruptly halting execution.
+- 🧪 **Testing**: Integrated a PHPUnit baseline test suite for safe continued development.
+- 🧹 **Cleanup**: Repository structure cleaned up, documentation and versioning aligned.
 
 See [CHANGELOG.md](CHANGELOG.md) for detailed technical changes.
 
@@ -155,7 +156,8 @@ Contributions for additional languages are welcome!
 
 | Version | GLPI 10.x | GLPI 11.x | Status | Notes |
 |---------|-----------|-----------|--------|-------|
-| 2.2.0   | ❌ No     | ✅ Yes    | **Current - Recommended** | Project Price feature |
+| 2.3.0   | ❌ No     | ✅ Yes    | **Current - Recommended** | Robustness, testing & cleanup |
+| 2.2.0   | ❌ No     | ✅ Yes    | Deprecated | Project Price feature |
 | 2.1.0   | ❌ No     | ✅ Yes    | Deprecated | GLPI 11 native improvements |
 | 2.0.0   | ❌ No     | ✅ Yes    | Deprecated | GLPI 11 native, breaking change |
 | 1.3.4   | ✅ Yes    | ⚠️ Partial | Maintenance | For GLPI 10.x users |
